@@ -3,6 +3,7 @@ import { Section } from './Section';
 import { Button } from '../ui/Button';
 import { Send } from 'lucide-react';
 import { Instagram } from '@/components/ui/BrandIcons';
+import { submitContactForm, type ContactFormData } from '@/services/contact';
 
 export const Contact: React.FC = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -18,20 +19,13 @@ export const Contact: React.FC = () => {
         const data = Object.fromEntries(formData.entries());
 
         try {
-            const response = await fetch('/api/contact', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            });
+            // Type assertion to match our new service interface
+            await submitContactForm(data as unknown as ContactFormData);
 
-            if (response.ok) {
-                setIsSuccess(true);
-                // Reset form success state after 5 seconds
-                setTimeout(() => setIsSuccess(false), 5000);
-            } else {
-                const result = await response.json();
-                setErrorMsg(result.error || 'Failed to send message. Please try again.');
-            }
+            setIsSuccess(true);
+            e.currentTarget.reset();
+            // Reset form success state after 5 seconds
+            setTimeout(() => setIsSuccess(false), 5000);
         } catch (error) {
             console.error('Contact form submission error:', error);
             setErrorMsg('An error occurred. Please try reaching out via Instagram.');
@@ -108,7 +102,7 @@ export const Contact: React.FC = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <label htmlFor="type" className="text-sm font-medium">Project Type</label>
-                                    <select name="type" id="type" className="w-full px-4 py-3 rounded-lg border border-input bg-transparent focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-foreground appearance-none" defaultValue="">
+                                    <select required name="type" id="type" className="w-full px-4 py-3 rounded-lg border border-input bg-transparent focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-foreground appearance-none" defaultValue="">
                                         <option value="" disabled>Select a type...</option>
                                         <option value="reels">IG Reels / TikTok Ads</option>
                                         <option value="event">Event Coverage</option>
