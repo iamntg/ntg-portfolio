@@ -67,12 +67,15 @@ export const Contact: React.FC = () => {
                             </div>
                             <h3 className="text-2xl font-bold font-heading">Message Sent!</h3>
                             <p className="text-muted-foreground">Thank you for reaching out. I'll get back to you as soon as possible to discuss your project.</p>
-                            <Button onClick={() => setIsSuccess(false)} variant="outline" className="mt-8">
+                            <Button onClick={() => {
+                                setIsSuccess(false);
+                                setErrorMsg('');
+                            }} variant="outline" className="mt-8">
                                 Send another message
                             </Button>
                         </div>
                     ) : (
-                        <form onSubmit={handleSubmit} className="space-y-6">
+                        <form onSubmit={handleSubmit} onChange={() => setErrorMsg('')} className="space-y-6">
 
                             {/* Honeypot Field */}
                             <input type="text" name="hp" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
@@ -95,7 +98,7 @@ export const Contact: React.FC = () => {
                                 </div>
                                 <div className="space-y-2">
                                     <label htmlFor="date" className="text-sm font-medium">Estimated Shoot Date</label>
-                                    <input name="date" id="date" type="date" className="w-full px-4 py-3 rounded-lg border border-input bg-transparent focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-foreground" />
+                                    <input name="date" id="date" type="date" min={new Date().toISOString().split('T')[0]} className="w-full px-4 py-3 rounded-lg border border-input bg-transparent focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-foreground" />
                                 </div>
                             </div>
 
