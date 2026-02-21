@@ -54,10 +54,10 @@ export const Hero: React.FC = () => {
                     transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
                     className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
                 >
-                    <Button size="lg" className="w-full sm:w-auto h-12 px-8 text-base">
+                    <Button size="lg" className="w-full sm:w-auto h-12 px-8 text-base" onClick={() => window.location.href = "#work"}>
                         View Work
                     </Button>
-                    <Button variant="outline" size="lg" className="w-full sm:w-auto h-12 px-8 text-base">
+                    <Button variant="outline" size="lg" className="w-full sm:w-auto h-12 px-8 text-base" onClick={() => window.location.href = "#contact"}>
                         Get a Quote
                     </Button>
                 </motion.div>
