@@ -1,6 +1,7 @@
 import React from 'react';
-import { navLinks } from '../../data';
-import { Camera, Instagram, Twitter, Mail } from 'lucide-react';
+import { navLinks } from '@/data';
+import { Camera, Mail } from 'lucide-react';
+import { Instagram, Twitter } from '@/components/ui/BrandIcons';
 
 export const Footer: React.FC = () => {
     return (

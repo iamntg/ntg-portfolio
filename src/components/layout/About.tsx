@@ -1,14 +1,16 @@
 import React from 'react';
-import { Section } from './Section';
-import { Button } from '../ui/Button';
-import ntgPhoto from '../../assets/images/ntg-photo.png';
+import { Section } from '@/components/layout/Section';
+import { Button } from '@/components/ui/Button';
+import ntgPhoto from '@/assets/images/ntg-photo.jpg';
+import { scrollToSection } from '@/utils/scroll';
+import { Instagram } from '@/components/ui/BrandIcons';
 
 export const About: React.FC = () => {
     return (
         <Section id="about">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 {/* Image / Portrait Placeholder */}
-                <div className="relative h-[600px] w-full rounded-3xl overflow-hidden bg-muted order-2 lg:order-1 border border-border shadow-xl">
+                <div className="relative aspect-[7/9] w-full rounded-3xl overflow-hidden bg-muted order-2 lg:order-1 border border-border shadow-xl">
                     <img
                         src={ntgPhoto}
                         alt="Nitheesh"
@@ -39,8 +41,11 @@ export const About: React.FC = () => {
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-4">
-                        <Button size="lg">Let's Work Together</Button>
-                        <Button variant="outline" size="lg">Instagram DM</Button>
+                        <Button size="lg" onClick={(e) => scrollToSection(e, '#contact')}>Let's Work Together</Button>
+                        <Button variant="outline" size="lg" onClick={() => window.open('https://instagram.com/eye.of.ntg', '_blank')}>
+                            <Instagram className="w-5 h-5 mr-2" />
+                            Instagram DM
+                        </Button>
                     </div>
                 </div>
             </div>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Camera } from 'lucide-react';
-import { navLinks } from '../../data';
-import { Button } from '../ui/Button';
+import { navLinks } from '@/data';
+import { Button } from '@/components/ui/Button';
+import { scrollToSection } from '@/utils/scroll';
 
 export const Navbar: React.FC = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -34,6 +35,7 @@ export const Navbar: React.FC = () => {
                             <li key={link.name}>
                                 <a
                                     href={link.href}
+                                    onClick={(e) => scrollToSection(e, link.href, () => setIsMobileMenuOpen(false))}
                                     className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                                 >
                                     {link.name}
@@ -41,7 +43,7 @@ export const Navbar: React.FC = () => {
                             </li>
                         ))}
                     </ul>
-                    <Button variant="primary" size="sm">Get a Quote</Button>
+                    <Button variant="primary" size="sm" onClick={(e) => scrollToSection(e, '#contact')}>Get a Quote</Button>
                 </nav>
 
                 {/* Mobile Menu Toggle */}
@@ -64,14 +66,14 @@ export const Navbar: React.FC = () => {
                                 <a
                                     href={link.href}
                                     className="text-2xl font-medium tracking-tight"
-                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    onClick={(e) => scrollToSection(e, link.href, () => setIsMobileMenuOpen(false))}
                                 >
                                     {link.name}
                                 </a>
                             </li>
                         ))}
                     </ul>
-                    <Button variant="primary" size="lg" className="w-48" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Button variant="primary" size="lg" className="w-48" onClick={(e) => scrollToSection(e, '#contact', () => setIsMobileMenuOpen(false))}>
                         Book a Shoot
                     </Button>
                 </div>

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Section } from './Section';
 import { Button } from '../ui/Button';
-import { Send, Instagram } from 'lucide-react';
+import { Send } from 'lucide-react';
+import { Instagram } from '@/components/ui/BrandIcons';
 
 export const Contact: React.FC = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -53,11 +54,11 @@ export const Contact: React.FC = () => {
                     </div>
 
                     <div className="space-y-4">
-                        <a href="https://instagram.com/nitheeshtg" target="_blank" rel="noreferrer" className="flex items-center gap-4 p-4 rounded-xl bg-background hover:bg-accent transition-colors group">
+                        <a href="https://instagram.com/eye.of.ntg" target="_blank" rel="noreferrer" className="flex items-center gap-4 p-4 rounded-xl bg-background hover:bg-accent transition-colors group">
                             <Instagram className="w-6 h-6 text-muted-foreground group-hover:text-foreground" />
                             <div>
                                 <p className="font-medium text-sm">DM on Instagram</p>
-                                <p className="text-xs text-muted-foreground">@nitheeshtg</p>
+                                <p className="text-xs text-muted-foreground">@eye.of.ntg</p>
                             </div>
                         </a>
                     </div>

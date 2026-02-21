@@ -1,9 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Button } from '../ui/Button';
-import { Section } from './Section';
-import { heroContent } from '../../data';
+import { Button } from '@/components/ui/Button';
+import { Section } from '@/components/layout/Section';
+import { heroContent } from '@/data';
 import { CheckCircle } from 'lucide-react';
+import { scrollToSection } from '@/utils/scroll';
 
 export const Hero: React.FC = () => {
     return (
@@ -54,10 +55,10 @@ export const Hero: React.FC = () => {
                     transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
                     className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
                 >
-                    <Button size="lg" className="w-full sm:w-auto h-12 px-8 text-base" onClick={() => window.location.href = "#work"}>
+                    <Button size="lg" className="w-full sm:w-auto h-12 px-8 text-base" onClick={(e) => scrollToSection(e, "#work")}>
                         View Work
                     </Button>
-                    <Button variant="outline" size="lg" className="w-full sm:w-auto h-12 px-8 text-base" onClick={() => window.location.href = "#contact"}>
+                    <Button variant="outline" size="lg" className="w-full sm:w-auto h-12 px-8 text-base" onClick={(e) => scrollToSection(e, "#contact")}>
                         Get a Quote
                     </Button>
                 </motion.div>
