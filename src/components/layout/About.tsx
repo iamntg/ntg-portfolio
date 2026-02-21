@@ -1,6 +1,7 @@
 import React from 'react';
 import { Section } from './Section';
 import { Button } from '../ui/Button';
+import ntgPhoto from '../../assets/images/ntg-photo.png';
 
 export const About: React.FC = () => {
     return (
@@ -9,7 +10,7 @@ export const About: React.FC = () => {
                 {/* Image / Portrait Placeholder */}
                 <div className="relative h-[600px] w-full rounded-3xl overflow-hidden bg-muted order-2 lg:order-1 border border-border shadow-xl">
                     <img
-                        src="https://images.unsplash.com/photo-1554046920-90dcac2ecb74?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                        src={ntgPhoto}
                         alt="Nitheesh"
                         className="w-full h-full object-cover"
                     />
