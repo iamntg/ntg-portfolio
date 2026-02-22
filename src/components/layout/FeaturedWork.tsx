@@ -2,10 +2,10 @@ import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Search, Filter, Image as ImageIcon, Video, Briefcase } from 'lucide-react';
 import { Section } from './Section';
-import { portfolioWork, brands, type WorkItem } from '../../data/work';
-import { Button } from '../ui/Button';
-import { Modal } from '../ui/Modal';
-import { VideoEmbed } from '../media/VideoEmbed';
+import { portfolioWork, brands, type WorkItem } from '@/data/work';
+import { Button } from '@/components/ui/Button';
+import { Modal } from '@/components/ui/Modal';
+import { VideoEmbed } from '@/components/media/VideoEmbed';
 
 export const FeaturedWork: React.FC = () => {
     const [activeCategory, setActiveCategory] = useState<string>('All');

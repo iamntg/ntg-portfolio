@@ -3,16 +3,20 @@ import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
 const CONFIG = {
     enabled: true,
-    maxParticles: 140,
+    maxParticles: 240, // Increased for denser feel
     spawnRateMs: 24,
-    opacity: 0.28,     // Slightly higher than initial for better visibility
-    particleLife: 110,
+    ambientRateMs: 400, // Faster ambient spawning
+    clusterChance: 0.3, // 30% chance to spawn a group
+    opacity: 0.28,
+    particleLife: 150,
     blur: 5.5,
     minHue: 200,
     maxHue: 320,
     minSize: 1.2,
     maxSize: 4,
-    velocityScale: 0.55,
+    velocityScale: 0.4,
+    attractionRadius: 250,
+    attractionForce: 0.02,
 };
 
 interface Particle {
@@ -25,24 +29,44 @@ interface Particle {
     maxLife: number;
     hue: number;
     alpha: number;
+    active: boolean; // Added for pooling
 }
 
 export const HeroParticles: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const particles = useRef<Particle[]>([]);
     const lastSpawnTime = useRef<number>(0);
+    const lastAmbientSpawnTime = useRef<number>(0);
+    const mouseRef = useRef({ x: 0, y: 0, active: false });
     const containerRef = useRef<HTMLDivElement>(null);
     const isVisible = useRef(true);
+    const isBooted = useRef(false); // Deferred boot flag
 
     const prefersReducedMotion = usePrefersReducedMotion();
+
+    // Initialize Particle Pool
+    useEffect(() => {
+        if (!particles.current.length) {
+            particles.current = Array.from({ length: CONFIG.maxParticles }, () => ({
+                x: 0, y: 0, vx: 0, vy: 0, radius: 0, life: 0, maxLife: 0, hue: 0, alpha: 0, active: false
+            }));
+        }
+
+        // Deferred Boot: Wait for main thread to be quiet
+        const timer = setTimeout(() => {
+            isBooted.current = true;
+        }, 2000);
+
+        return () => clearTimeout(timer);
+    }, []);
 
     const resize = useCallback(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
-        const { width, height } = canvas.getBoundingClientRect();
+        const rect = canvas.getBoundingClientRect();
         const dpr = window.devicePixelRatio || 1;
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
         const ctx = canvas.getContext('2d');
         if (ctx) ctx.scale(dpr, dpr);
     }, []);
@@ -68,25 +92,25 @@ export const HeroParticles: React.FC = () => {
         return () => observer.disconnect();
     }, []);
 
-    const createParticle = useCallback((x: number, y: number) => {
-        if (particles.current.length >= CONFIG.maxParticles) {
-            particles.current.shift();
-        }
+    const spawnParticle = useCallback((x: number, y: number, isAmbient = false) => {
+        // Find first available (inactive) particle in the pool
+        const p = particles.current.find(p => !p.active);
+        if (!p) return; // Pool is full
 
         const hue = CONFIG.minHue + Math.random() * (CONFIG.maxHue - CONFIG.minHue);
         const life = CONFIG.particleLife * (0.8 + Math.random() * 0.4);
+        const vScale = isAmbient ? CONFIG.velocityScale * 0.5 : CONFIG.velocityScale;
 
-        particles.current.push({
-            x,
-            y,
-            vx: (Math.random() - 0.5) * CONFIG.velocityScale,
-            vy: (Math.random() - 0.5) * CONFIG.velocityScale,
-            radius: CONFIG.minSize + Math.random() * (CONFIG.maxSize - CONFIG.minSize),
-            life,
-            maxLife: life,
-            hue,
-            alpha: 1,
-        });
+        p.x = x;
+        p.y = y;
+        p.vx = (Math.random() - 0.5) * vScale;
+        p.vy = (Math.random() - 0.5) * vScale;
+        p.radius = CONFIG.minSize + Math.random() * (CONFIG.maxSize - CONFIG.minSize);
+        p.life = life;
+        p.maxLife = life;
+        p.hue = hue;
+        p.alpha = 1;
+        p.active = true;
     }, []);
 
     useEffect(() => {
@@ -101,30 +125,74 @@ export const HeroParticles: React.FC = () => {
         let animationFrameId: number;
 
         const update = () => {
-            particles.current.forEach((p, i) => {
+            if (!isBooted.current) return;
+            const now = Date.now();
+
+            // Handle Ambient Spawning
+            if (now - lastAmbientSpawnTime.current > CONFIG.ambientRateMs) {
+                const rect = canvas.getBoundingClientRect();
+                const centerX = Math.random() * rect.width;
+                const centerY = Math.random() * rect.height;
+
+                const isCluster = Math.random() < CONFIG.clusterChance;
+                const spawnCount = isCluster ? Math.floor(Math.random() * 4) + 3 : 1;
+
+                for (let i = 0; i < spawnCount; i++) {
+                    const offsetX = isCluster ? (Math.random() - 0.5) * 40 : 0;
+                    const offsetY = isCluster ? (Math.random() - 0.5) * 40 : 0;
+                    spawnParticle(centerX + offsetX, centerY + offsetY, true);
+                }
+
+                lastAmbientSpawnTime.current = now;
+            }
+
+            for (let i = 0; i < particles.current.length; i++) {
+                const p = particles.current[i];
+                if (!p.active) continue;
+
+                // Attraction Logic
+                if (mouseRef.current.active) {
+                    const dx = mouseRef.current.x - p.x;
+                    const dy = mouseRef.current.y - p.y;
+                    const distanceSq = dx * dx + dy * dy; // Use distance squared to avoid Math.sqrt
+
+                    if (distanceSq < CONFIG.attractionRadius * CONFIG.attractionRadius) {
+                        const distance = Math.sqrt(distanceSq);
+                        const force = (1 - distance / CONFIG.attractionRadius) * CONFIG.attractionForce;
+                        p.vx += dx * force;
+                        p.vy += dy * force;
+                    }
+                }
+
                 p.x += p.vx;
                 p.y += p.vy;
+                p.vx *= 0.98;
+                p.vy *= 0.98;
                 p.life--;
                 p.alpha = Math.max(0, p.life / p.maxLife);
 
                 if (p.life <= 0) {
-                    particles.current.splice(i, 1);
+                    p.active = false;
                 }
-            });
+            }
         };
 
         const draw = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (!isBooted.current) return;
+            ctx.clearRect(0, 0, canvas.width / (window.devicePixelRatio || 1), canvas.height / (window.devicePixelRatio || 1));
             ctx.globalCompositeOperation = 'screen';
 
-            particles.current.forEach((p) => {
+            for (let i = 0; i < particles.current.length; i++) {
+                const p = particles.current[i];
+                if (!p.active) continue;
+
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
                 ctx.fillStyle = `hsla(${p.hue}, 70%, 70%, ${p.alpha * CONFIG.opacity})`;
                 ctx.shadowBlur = CONFIG.blur;
                 ctx.shadowColor = `hsla(${p.hue}, 70%, 70%, ${p.alpha})`;
                 ctx.fill();
-            });
+            }
         };
 
         const loop = () => {
@@ -138,11 +206,11 @@ export const HeroParticles: React.FC = () => {
         loop();
 
         return () => cancelAnimationFrame(animationFrameId);
-    }, [prefersReducedMotion]);
+    }, [spawnParticle, prefersReducedMotion]);
 
     useEffect(() => {
         const handleMove = (e: MouseEvent | TouchEvent) => {
-            if (!isVisible.current || !CONFIG.enabled || prefersReducedMotion) return;
+            if (!isVisible.current || !CONFIG.enabled || prefersReducedMotion || !isBooted.current) return;
 
             const canvas = canvasRef.current;
             if (!canvas) return;
@@ -158,23 +226,33 @@ export const HeroParticles: React.FC = () => {
                 y = e.clientY - rect.top;
             }
 
-            // Only spawn if within canvas bounds
+            mouseRef.current = { x, y, active: true };
+
             if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
                 const now = Date.now();
                 if (now - lastSpawnTime.current > CONFIG.spawnRateMs) {
-                    createParticle(x, y);
+                    spawnParticle(x, y);
                     lastSpawnTime.current = now;
                 }
+            } else {
+                mouseRef.current.active = false;
             }
+        };
+
+        const handleLeave = () => {
+            mouseRef.current.active = false;
         };
 
         window.addEventListener('mousemove', handleMove);
         window.addEventListener('touchmove', handleMove);
+        window.addEventListener('mouseleave', handleLeave);
+
         return () => {
             window.removeEventListener('mousemove', handleMove);
             window.removeEventListener('touchmove', handleMove);
+            window.removeEventListener('mouseleave', handleLeave);
         };
-    }, [createParticle, prefersReducedMotion]);
+    }, [spawnParticle, prefersReducedMotion]);
 
     if (prefersReducedMotion) {
         return (
@@ -188,7 +266,6 @@ export const HeroParticles: React.FC = () => {
             className="absolute inset-0 pointer-events-none -z-10 overflow-hidden"
             aria-hidden="true"
         >
-            {/* Subtle Parallax Background Gradient */}
             <div
                 className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.08),rgba(255,255,255,0))] animate-pulse"
                 style={{ animationDuration: '10s' }}
