@@ -1,9 +1,11 @@
 import React from 'react';
 import { navLinks } from '@/data';
 import { Camera, Mail } from 'lucide-react';
-import { Instagram, Twitter } from '@/components/ui/BrandIcons';
+import { Instagram, Facebook } from '@/components/ui/BrandIcons';
 
 export const Footer: React.FC = () => {
+    const email = import.meta.env.VITE_CONTACT_EMAIL;
+
     return (
         <footer className="bg-secondary text-secondary-foreground py-12 md:py-16 mt-20">
             <div className="container mx-auto px-4 md:px-6">
@@ -18,13 +20,13 @@ export const Footer: React.FC = () => {
                             Cinematic video production and photography for forward-thinking brands and creators in Calgary, AB.
                         </p>
                         <div className="flex items-center gap-4">
-                            <a href="#" className="p-2 bg-background rounded-full hover:bg-accent hover:text-accent-foreground transition-colors" aria-label="Instagram">
+                            <a href="https://www.instagram.com/eye.of.ntg" target="_blank" rel="noopener noreferrer" className="p-2 bg-background rounded-full hover:bg-accent hover:text-accent-foreground transition-colors" aria-label="Instagram">
                                 <Instagram className="w-5 h-5" />
                             </a>
-                            <a href="#" className="p-2 bg-background rounded-full hover:bg-accent hover:text-accent-foreground transition-colors" aria-label="Twitter">
-                                <Twitter className="w-5 h-5" />
+                            <a href="https://www.facebook.com/eye.of.ntg" target="_blank" rel="noopener noreferrer" className="p-2 bg-background rounded-full hover:bg-accent hover:text-accent-foreground transition-colors" aria-label="Facebook">
+                                <Facebook className="w-5 h-5" />
                             </a>
-                            <a href="#" className="p-2 bg-background rounded-full hover:bg-accent hover:text-accent-foreground transition-colors" aria-label="Email">
+                            <a href={`mailto:${email}`} className="p-2 bg-background rounded-full hover:bg-accent hover:text-accent-foreground transition-colors" aria-label="Email">
                                 <Mail className="w-5 h-5" />
                             </a>
                         </div>
@@ -51,7 +53,7 @@ export const Footer: React.FC = () => {
                             <li>Calgary, Alberta (YYC)</li>
                             <li>Available for travel</li>
                             <li>
-                                <a href="mailto:hello@ntg.com" className="hover:text-foreground transition-colors">hello@ntg.com</a>
+                                <a href={`mailto:${email}`} className="hover:text-foreground transition-colors">Send a mail</a>
                             </li>
                         </ul>
                     </div>

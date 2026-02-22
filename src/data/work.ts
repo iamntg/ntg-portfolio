@@ -1,212 +1,239 @@
-export type Category = "Influencer Ads" | "Events" | "Photography" | "YouTube" | "All";
-export type Platform = "IG Reel" | "TikTok" | "YouTube" | "Photo" | "All";
-export type MediaType = "video" | "image";
+// Instructions for updating media:
+// 1. YouTube: Upload an unlisted video to your YouTube channel. Copy the video ID (from the watch?v= parameter).
+//    Add { type: "youtube", id: "YOUR_ID" } to the item's media property.
+// 2. MP4: Place short, optimized .mp4 preview clips in the /public/videos folder (or use absolute URLs).
+//    Add { type: "mp4", src: "/videos/your_clip.mp4", poster?: "optional_poster_url.jpg" } to the media property.
+// 3. Image: Standard image entries for Photography or fallbacks.
+//    Add { type: "image", src: "image_url.jpg" } to the media property.
+
+export type Category = "All" | "Brand Campaigns" | "Events & Festivals" | "Creative / Model Work" | "YouTube & Cinematic" | "Photography";
+export type Orientation = "vertical" | "horizontal";
 
 export interface WorkItem {
     id: string;
     title: string;
-    category: string;
-    platform: string[];
-    brand: string;
-    creator: string;
-    year: number;
-    thumbnail: string;
-    mediaType: MediaType;
-    mediaUrl: string; // Placeholder for MP4 / YouTube embed
-    description: string;
-    role: string[];
-    goal: string;
+    category: Category;
+    brand?: string;
+    year?: string;
+    description?: string;
+    tags?: string[];
+    thumbnailUrl: string;
+    orientation: Orientation;
+    media:
+    | { type: "youtube"; id: string }
+    | { type: "mp4"; src: string; poster?: string }
+    | { type: "image"; src: string; alt?: string };
 }
 
 export const brands = [
-    "HomeSense",
-    "BestBuy",
-    "Lagostina",
+    "Turo",
     "FYidoctors",
-    "Dairy Farmers of Canada",
-    "Gusti",
-    "BioGaia",
+    "CrossIron Mills",
+    "New Chapter",
+    "Lagostina",
+    "HomeSense",
+    "Kohinoor Jewellers"
 ];
 
 export const portfolioWork: WorkItem[] = [
     {
         id: "1",
-        title: "HomeSense Seasonal Refresh",
-        category: "Influencer Ads",
-        platform: ["IG Reel", "TikTok"],
-        brand: "HomeSense",
-        creator: "@stylebyaliya",
-        year: 2023,
-        thumbnail: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&q=80&w=800",
-        mediaType: "video",
-        mediaUrl: "",
-        description: "A dynamic, fast-paced reel showcasing new seasonal decor finds and interior styling tips.",
-        role: ["Shoot", "Edit", "Color"],
-        goal: "Drive foot traffic and highlight affordable seasonal decor."
+        title: "Turo Summer Campaign",
+        category: "Brand Campaigns",
+        brand: "Turo",
+        year: "2024",
+        description: "Energetic and visually stunning campaign highlighting premium vehicle rentals for summer road trips. Delivered across multiple social channels.",
+        tags: ["IG Reel", "TikTok"],
+        thumbnailUrl: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=800",
+        orientation: "vertical",
+        media: {
+            type: "mp4",
+            src: "https://www.w3schools.com/html/mov_bbb.mp4", // Replace with your actual local/remote MP4 link
+            poster: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=800"
+        }
     },
     {
         id: "2",
-        title: "BestBuy Tech Haul & Setup",
-        category: "Influencer Ads",
-        platform: ["IG Reel", "TikTok"],
-        brand: "BestBuy",
-        creator: "@stylebyaliya",
-        year: 2023,
-        thumbnail: "https://images.unsplash.com/photo-1550009158-9efff6c623a5?auto=format&fit=crop&q=80&w=800",
-        mediaType: "video",
-        mediaUrl: "",
-        description: "Cinematic desk setup transformation featuring the latest productivity tech from BestBuy.",
-        role: ["Shoot", "Edit", "Delivery"],
-        goal: "Showcase product ecosystem and drive online conversions."
-    },
-    {
-        id: "3",
-        title: "Lagostina Cookware Showcase",
-        category: "Influencer Ads",
-        platform: ["IG Reel"],
-        brand: "Lagostina",
-        creator: "@stylebyaliya",
-        year: 2024,
-        thumbnail: "https://images.unsplash.com/photo-1584990347449-a1c87eb57ea6?auto=format&fit=crop&q=80&w=800",
-        mediaType: "video",
-        mediaUrl: "",
-        description: "Premium culinary content highlighting the durability and aesthetic of Lagostina cookware.",
-        role: ["Shoot", "Edit", "Color"],
-        goal: "Brand awareness and premium positioning."
-    },
-    {
-        id: "4",
-        title: "FYidoctors Eyewear Try-on",
-        category: "Influencer Ads",
-        platform: ["IG Reel", "TikTok"],
+        title: "FYidoctors Designer Frames",
+        category: "Brand Campaigns",
         brand: "FYidoctors",
-        creator: "@stylebyaliya",
-        year: 2023,
-        thumbnail: "https://images.unsplash.com/photo-1574258495973-f010dfbb5371?auto=format&fit=crop&q=80&w=800",
-        mediaType: "video",
-        mediaUrl: "",
-        description: "Trendy, energetic eyewear try-on featuring seamless transitions.",
-        role: ["Shoot", "Edit", "Color"],
-        goal: "Promote new designer frame collections."
-    },
-    {
-        id: "5",
-        title: "Gender Reveal Celebration - Sarah & John",
-        category: "Events",
-        platform: ["IG Reel", "Photo"],
-        brand: "Private Client",
-        creator: "N/A",
-        year: 2023,
-        thumbnail: "https://images.unsplash.com/photo-1530103862676-de8892ebe942?auto=format&fit=crop&q=80&w=800",
-        mediaType: "video",
-        mediaUrl: "",
-        description: "Intimate and emotional highlight video capturing the big reveal moment with family.",
-        role: ["Shoot", "Edit", "Color"],
-        goal: "Create a timeless memory for the family."
-    },
-    {
-        id: "6",
-        title: "Dairy Farmers of Canada - Local Love",
-        category: "Influencer Ads",
-        platform: ["IG Reel"],
-        brand: "Dairy Farmers of Canada",
-        creator: "@stylebyaliya",
-        year: 2023,
-        thumbnail: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&q=80&w=800",
-        mediaType: "video",
-        mediaUrl: "",
-        description: "Recipe integration and lifestyle video highlighting local dairy products.",
-        role: ["Shoot", "Edit", "Color", "Delivery"],
-        goal: "Encourage consumers to look for the Blue Cow logo."
-    },
-    {
-        id: "7",
-        title: "Gusti Outerwear Autumn Collection",
-        category: "Influencer Ads",
-        platform: ["IG Reel", "TikTok"],
-        brand: "Gusti",
-        creator: "@stylebyaliya",
-        year: 2023,
-        thumbnail: "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&q=80&w=800",
-        mediaType: "video",
-        mediaUrl: "",
-        description: "Outdoor lifestyle aesthetic showcasing durability and comfort of kids' winter wear.",
-        role: ["Shoot", "Edit", "Color"],
-        goal: "Pre-season awareness and sales."
+        year: "2023",
+        description: "A fast-paced, trendy showcase of new designer frame collections, tailored for TikTok and Instagram Reels.",
+        tags: ["TikTok", "IG Reel"],
+        thumbnailUrl: "https://images.unsplash.com/photo-1574258495973-f010dfbb5371?auto=format&fit=crop&q=80&w=800",
+        orientation: "vertical",
+        media: {
+            type: "youtube",
+            id: "dQw4w9WgXcQ" // Vertical Short or reel ID
+        }
     },
     {
         id: "8",
-        title: "BioGaia Probiotic Routine",
-        category: "Influencer Ads",
-        platform: ["IG Reel"],
-        brand: "BioGaia",
-        creator: "@stylebyaliya",
-        year: 2024,
-        thumbnail: "https://images.unsplash.com/photo-1584308666744-24d5e478ce13?auto=format&fit=crop&q=80&w=800",
-        mediaType: "video",
-        mediaUrl: "",
-        description: "A calming morning routine video integrating the daily supplement.",
-        role: ["Shoot", "Edit"],
-        goal: "Educate audience on wellness routines."
+        title: "Calgary Stampede Highlights",
+        category: "Events & Festivals",
+        brand: "Tourism Calgary",
+        year: "2023",
+        description: "High-energy event recap capturing the sights, sounds, and excitement of the Greatest Outdoor Show on Earth.",
+        tags: ["YouTube"],
+        thumbnailUrl: "https://images.unsplash.com/photo-1533174000255-b44c205763ee?auto=format&fit=crop&q=80&w=800",
+        orientation: "horizontal",
+        media: {
+            type: "youtube",
+            id: "dQw4w9WgXcQ" // Horizontal YouTube ID
+        }
+    },
+    {
+        id: "3",
+        title: "CrossIron Mills Holiday Haul",
+        category: "Brand Campaigns",
+        brand: "CrossIron Mills",
+        year: "2023",
+        description: "Dynamic shopping experience capturing the festive atmosphere and premium retailers at CrossIron Mills.",
+        thumbnailUrl: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=800",
+        orientation: "vertical",
+        media: {
+            type: "image",
+            src: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=800"
+        }
+    },
+    {
+        id: "4",
+        title: "Lagostina Premium Cookware",
+        category: "Brand Campaigns",
+        brand: "Lagostina",
+        year: "2024",
+        description: "Cinematic culinary content emphasizing the durability and striking aesthetic of Lagostina's premium cookware line.",
+        thumbnailUrl: "https://images.unsplash.com/photo-1584990347449-a1c87eb57ea6?auto=format&fit=crop&q=80&w=800",
+        orientation: "vertical",
+        media: {
+            type: "image",
+            src: "https://images.unsplash.com/photo-1584990347449-a1c87eb57ea6?auto=format&fit=crop&q=80&w=800"
+        }
+    },
+    {
+        id: "5",
+        title: "HomeSense Seasonal Refresh",
+        category: "Brand Campaigns",
+        brand: "HomeSense",
+        year: "2023",
+        description: "Showcasing affordable, stylish seasonal decor finds in a highly engaging short-form format.",
+        thumbnailUrl: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&q=80&w=800",
+        orientation: "vertical",
+        media: {
+            type: "image",
+            src: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&q=80&w=800"
+        }
+    },
+    {
+        id: "6",
+        title: "Kohinoor Jewellers Collection",
+        category: "Brand Campaigns",
+        brand: "Kohinoor Jewellers",
+        year: "2024",
+        description: "Elegant macro videography highlighting the intricate details of luxury bridal jewelry pieces.",
+        thumbnailUrl: "https://images.unsplash.com/photo-1599643478514-4a11011d31ed?auto=format&fit=crop&q=80&w=800",
+        orientation: "vertical",
+        media: {
+            type: "image",
+            src: "https://images.unsplash.com/photo-1599643478514-4a11011d31ed?auto=format&fit=crop&q=80&w=800"
+        }
+    },
+    {
+        id: "7",
+        title: "New Chapter Wellness",
+        category: "Brand Campaigns",
+        brand: "New Chapter",
+        year: "2024",
+        description: "A calming lifestyle routine integrating natural supplements into daily wellness practices.",
+        thumbnailUrl: "https://images.unsplash.com/photo-1584308666744-24d5e478ce13?auto=format&fit=crop&q=80&w=800",
+        orientation: "vertical",
+        media: {
+            type: "image",
+            src: "https://images.unsplash.com/photo-1584308666744-24d5e478ce13?auto=format&fit=crop&q=80&w=800"
+        }
     },
     {
         id: "9",
-        title: "Street Style Fashion Outlet",
-        category: "Influencer Ads",
-        platform: ["IG Reel", "TikTok"],
-        brand: "Fashion Boutique",
-        creator: "@anothercreator",
-        year: 2024,
-        thumbnail: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80&w=800",
-        mediaType: "video",
-        mediaUrl: "",
-        description: "High-energy outfit transition reel highlighting different streetwear looks.",
-        role: ["Shoot", "Edit", "Transitions"],
-        goal: "Showcase styling versatility and drive boutique visits."
+        title: "Fashion Week Backstage",
+        category: "Events & Festivals",
+        brand: "Local Designers",
+        year: "2024",
+        description: "A gritty, fast-paced documentary style look at the chaos and beauty behind the runway.",
+        thumbnailUrl: "https://images.unsplash.com/photo-1509631179647-0c11573e32bd?auto=format&fit=crop&q=80&w=800",
+        orientation: "vertical",
+        media: {
+            type: "image",
+            src: "https://images.unsplash.com/photo-1509631179647-0c11573e32bd?auto=format&fit=crop&q=80&w=800"
+        }
     },
     {
         id: "10",
-        title: "Gender Reveal Celebration - The Smiths",
-        category: "Events",
-        platform: ["Photo", "IG Reel"],
-        brand: "Private Client",
-        creator: "N/A",
-        year: 2024,
-        thumbnail: "https://images.unsplash.com/photo-1555243896-771a337c7ee0?auto=format&fit=crop&q=80&w=800",
-        mediaType: "image",
-        mediaUrl: "",
-        description: "Elegant outdoor gender reveal photography capturing candid reactions.",
-        role: ["Photography", "Retouching"],
-        goal: "High-quality stills for family album."
+        title: "Neon Nights Urban Editorial",
+        category: "Creative / Model Work",
+        brand: "Independent",
+        year: "2023",
+        description: "Moody, cyberpunk-inspired model shoot focusing on creative lighting and streetwear.",
+        thumbnailUrl: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80&w=800",
+        orientation: "vertical",
+        media: {
+            type: "image",
+            src: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80&w=800"
+        }
     },
     {
         id: "11",
-        title: "Kyoto After Dark - Cinematic Travel",
-        category: "YouTube",
-        platform: ["YouTube"],
+        title: "Kyoto After Dark",
+        category: "YouTube & Cinematic",
         brand: "Nebulatic",
-        creator: "Nitheesh (NTG)",
-        year: 2023,
-        thumbnail: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80&w=800",
-        mediaType: "video",
-        mediaUrl: "",
-        description: "A moody, atmospheric visual journey through the neon-lit streets of Kyoto.",
-        role: ["Direct", "Shoot", "Edit", "Sound Design"],
-        goal: "Grow personal YouTube channel audience and flex cinematic style."
+        year: "2023",
+        description: "A cinematic visual journey through the neon-lit streets of Kyoto, Japan. Focusing on atmosphere and sound design.",
+        thumbnailUrl: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80&w=800",
+        orientation: "horizontal",
+        media: {
+            type: "image",
+            src: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80&w=800"
+        }
     },
     {
         id: "12",
-        title: "The Art of Coffee - Calgary",
-        category: "YouTube",
-        platform: ["YouTube"],
+        title: "The Art of Coffee",
+        category: "YouTube & Cinematic",
         brand: "Nebulatic",
-        creator: "Nitheesh (NTG)",
-        year: 2023,
-        thumbnail: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&q=80&w=800",
-        mediaType: "video",
-        mediaUrl: "",
-        description: "A short documentary-style sequence on local craft coffee culture in YYC.",
-        role: ["Direct", "Shoot", "Edit", "Color Grading"],
-        goal: "Showcase storytelling and B-roll capabilities."
+        year: "2023",
+        description: "A short documentary-style sequence exploring local craft coffee culture.",
+        thumbnailUrl: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&q=80&w=800",
+        orientation: "horizontal",
+        media: {
+            type: "image",
+            src: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&q=80&w=800"
+        }
+    },
+    {
+        id: "13",
+        title: "Editorial Brand Shoot",
+        category: "Photography",
+        brand: "Private Client",
+        year: "2024",
+        description: "Studio editorial photography for a boutique fashion brand's summer catalog.",
+        thumbnailUrl: "https://images.unsplash.com/photo-1555243896-771a337c7ee0?auto=format&fit=crop&q=80&w=800",
+        orientation: "vertical",
+        media: {
+            type: "image",
+            src: "https://images.unsplash.com/photo-1555243896-771a337c7ee0?auto=format&fit=crop&q=80&w=800"
+        }
+    },
+    {
+        id: "14",
+        title: "Automotive Precision",
+        category: "Photography",
+        brand: "Private Client",
+        year: "2023",
+        description: "High-contrast automotive photography highlighting vehicle curves and design.",
+        thumbnailUrl: "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&q=80&w=800",
+        orientation: "horizontal",
+        media: {
+            type: "image",
+            src: "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&q=80&w=800"
+        }
     }
 ];

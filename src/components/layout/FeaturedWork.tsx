@@ -1,71 +1,55 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Search, Filter, Image as ImageIcon, Video, User, Briefcase, Camera } from 'lucide-react';
+import { Play, Search, Filter, Image as ImageIcon, Video, Briefcase } from 'lucide-react';
 import { Section } from './Section';
 import { portfolioWork, brands, type WorkItem } from '../../data/work';
 import { Button } from '../ui/Button';
 import { Modal } from '../ui/Modal';
+import { VideoEmbed } from '../media/VideoEmbed';
 
 export const FeaturedWork: React.FC = () => {
     const [activeCategory, setActiveCategory] = useState<string>('All');
-    const [activeBrand, setActiveBrand] = useState<string>('All');
-    const [activePlatform, setActivePlatform] = useState<string>('All');
     const [searchQuery, setSearchQuery] = useState('');
 
     const [selectedWork, setSelectedWork] = useState<WorkItem | null>(null);
 
-    const categories = ['All', 'Influencer Ads', 'Events', 'YouTube', 'Photography'];
-    const platforms = ['All', 'IG Reel', 'TikTok', 'YouTube', 'Photo'];
+    const categories = ['All', 'Brand Campaigns', 'Events & Festivals', 'Creative / Model Work', 'YouTube & Cinematic'];
 
     const filteredProjects = useMemo(() => {
         return portfolioWork.filter(p => {
+            if (p.category === 'Photography') return false;
             const matchCategory = activeCategory === 'All' || p.category === activeCategory;
-            const matchBrand = activeBrand === 'All' || p.brand === activeBrand;
-            const matchPlatform = activePlatform === 'All' || p.platform.includes(activePlatform);
             const matchSearch = p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                p.brand.toLowerCase().includes(searchQuery.toLowerCase());
+                (p.brand?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false);
 
-            return matchCategory && matchBrand && matchPlatform && matchSearch;
+            return matchCategory && matchSearch;
         });
-    }, [activeCategory, activeBrand, activePlatform, searchQuery]);
+    }, [activeCategory, searchQuery]);
 
     return (
         <Section id="work" className="bg-secondary/30 relative">
 
             {/* 1. Header & Brand Pills */}
-            <div className="mb-12 max-w-4xl mx-auto text-center">
-                <h2 className="text-3xl md:text-5xl font-heading font-bold mb-6">Selected Work</h2>
+            <div className="mb-16 max-w-4xl mx-auto text-center">
+                <h2 className="text-3xl md:text-5xl font-heading font-bold mb-6">Brand Campaign Experience</h2>
+                <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+                    Commercial and influencer-led brand campaign content shot, edited, and delivered for social media and digital platforms.
+                </p>
 
                 <div className="bg-card border border-border rounded-2xl p-6 md:p-8 shadow-sm">
-                    <h3 className="text-sm uppercase tracking-widest text-muted-foreground font-semibold mb-4">Brand Campaigns & Partners</h3>
                     <div className="flex flex-wrap items-center justify-center gap-3">
                         {brands.map(brand => (
-                            <span key={brand} className="px-3 py-1.5 bg-secondary text-secondary-foreground text-sm font-medium rounded-full border border-border/50">
+                            <span key={brand} className="px-4 py-2 bg-secondary text-secondary-foreground text-sm font-semibold rounded-full border border-border/50">
                                 {brand}
                             </span>
                         ))}
-                        <span className="px-3 py-1.5 text-sm font-medium text-muted-foreground">and more...</span>
                     </div>
                 </div>
             </div>
 
-            {/* Aliya Highlight Banner */}
-            <div className="mb-16 max-w-4xl mx-auto bg-gradient-to-r from-primary/10 to-transparent border-l-4 border-primary p-6 rounded-r-2xl">
-                <h4 className="text-lg md:text-xl font-heading font-bold mb-2 flex items-center gap-2">
-                    <Camera className="w-5 h-5 text-primary" />
-                    Extended Partnership: @stylebyaliya
-                </h4>
-                <p className="text-muted-foreground mb-2">
-                    <strong>25+ influencer brand campaigns shot, edited, and delivered.</strong>
-                </p>
-                <p className="text-sm text-muted-foreground italic">
-                    *Some samples available on request privately for brands that require clearance permissions.
-                </p>
-            </div>
-
             {/* 2. Filters & Search */}
             <div className="mb-10 flex flex-col gap-6">
-                {/* Search & Select dropdowns */}
+                {/* Search */}
                 <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
                     <div className="relative w-full md:w-96">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -76,28 +60,6 @@ export const FeaturedWork: React.FC = () => {
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className="w-full pl-10 pr-4 py-2 bg-background border border-border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
                         />
-                    </div>
-
-                    <div className="flex w-full md:w-auto gap-4">
-                        <select
-                            value={activeBrand}
-                            onChange={(e) => setActiveBrand(e.target.value)}
-                            className="w-full md:w-auto px-4 py-2 bg-background border border-border rounded-full text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary/30"
-                        >
-                            <option value="All">All Brands</option>
-                            {brands.map(b => <option key={b} value={b}>{b}</option>)}
-                            <option value="Private Client">Private Client</option>
-                            <option value="Nebulatic">Nebulatic</option>
-                            <option value="Fashion Boutique">Fashion Boutique</option>
-                        </select>
-
-                        <select
-                            value={activePlatform}
-                            onChange={(e) => setActivePlatform(e.target.value)}
-                            className="w-full md:w-auto px-4 py-2 bg-background border border-border rounded-full text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary/30"
-                        >
-                            {platforms.map(p => <option key={p} value={p}>{p}</option>)}
-                        </select>
                     </div>
                 </div>
 
@@ -135,7 +97,7 @@ export const FeaturedWork: React.FC = () => {
                         >
                             <div className="relative aspect-[4/5] overflow-hidden bg-muted">
                                 <img
-                                    src={project.thumbnail}
+                                    src={project.thumbnailUrl}
                                     alt={project.title}
                                     className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
                                     loading="lazy"
@@ -143,7 +105,7 @@ export const FeaturedWork: React.FC = () => {
 
                                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
                                     <div className="w-16 h-16 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center text-white border border-white/50 transform scale-75 group-hover:scale-100 transition-all duration-300">
-                                        {project.mediaType === 'video' ? (
+                                        {(project.media.type === 'mp4' || project.media.type === 'youtube') ? (
                                             <Play className="w-6 h-6 ml-1 fill-white" />
                                         ) : (
                                             <ImageIcon className="w-6 h-6 text-white" />
@@ -158,7 +120,7 @@ export const FeaturedWork: React.FC = () => {
                                 </div>
 
                                 <div className="absolute top-4 left-4">
-                                    {project.mediaType === 'video' ? (
+                                    {(project.media.type === 'mp4' || project.media.type === 'youtube') ? (
                                         <div className="px-2 py-1 bg-black/50 backdrop-blur-md text-white rounded text-xs flex items-center gap-1">
                                             <Video className="w-3 h-3" /> Video
                                         </div>
@@ -172,15 +134,8 @@ export const FeaturedWork: React.FC = () => {
 
                             <div className="p-6">
                                 <h3 className="text-xl font-heading font-semibold mb-1 line-clamp-1">{project.title}</h3>
-                                <p className="text-sm font-medium text-primary mb-3">{project.brand}</p>
-                                <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{project.description}</p>
-                                <div className="flex flex-wrap gap-2">
-                                    {project.platform.map(tag => (
-                                        <span key={tag} className="text-xs px-2 py-1 bg-secondary text-secondary-foreground rounded-md">
-                                            {tag}
-                                        </span>
-                                    ))}
-                                </div>
+                                {project.brand && <p className="text-sm font-medium text-primary mb-3">{project.brand}</p>}
+                                {project.description && <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{project.description}</p>}
                             </div>
                         </motion.div>
                     ))}
@@ -194,8 +149,6 @@ export const FeaturedWork: React.FC = () => {
                             <p className="text-muted-foreground">Try adjusting your filters or search query.</p>
                             <Button variant="outline" className="mt-6" onClick={() => {
                                 setSearchQuery('');
-                                setActiveBrand('All');
-                                setActivePlatform('All');
                                 setActiveCategory('All');
                             }}>
                                 Clear Filters
@@ -208,23 +161,23 @@ export const FeaturedWork: React.FC = () => {
             {/* 4. Modal View */}
             <Modal isOpen={!!selectedWork} onClose={() => setSelectedWork(null)}>
                 {selectedWork && (
-                    <div className="flex flex-col bg-background h-full">
+                    <div className="flex flex-col bg-background h-full overflow-hidden">
                         {/* Media Area */}
-                        <div className="w-full aspect-video bg-black relative flex items-center justify-center overflow-hidden flex-shrink-0">
-                            {/* Media Placeholder */}
-                            <img
-                                src={selectedWork.thumbnail}
-                                alt={selectedWork.title}
-                                className="w-full h-full object-cover opacity-50 blur-sm absolute inset-0"
-                            />
-                            <div className="z-10 flex flex-col items-center justify-center text-white">
-                                {selectedWork.mediaType === 'video' ? <Play className="w-16 h-16 mb-4 opacity-80" /> : <ImageIcon className="w-16 h-16 mb-4 opacity-80" />}
-                                <p className="text-sm tracking-widest uppercase font-semibold">
-                                    [ {selectedWork.mediaType === 'video' ? 'Video Player Placeholder' : 'Image Carousel Placeholder'} ]
-                                </p>
-                                <p className="text-xs opacity-60 mt-2">Replace with iframe or video tag in production</p>
+                        {(selectedWork.media.type === 'mp4' || selectedWork.media.type === 'youtube') && (
+                            <div className="w-full bg-black relative flex items-center justify-center flex-shrink-0 flex-1 min-h-[40vh] md:min-h-0">
+                                <VideoEmbed media={selectedWork.media} orientation={selectedWork.orientation} title={selectedWork.title} />
                             </div>
-                        </div>
+                        )}
+
+                        {selectedWork.media.type === 'image' && (
+                            <div className="w-full h-[60vh] md:h-[80vh] bg-black border-b border-border flex items-center justify-center">
+                                <img
+                                    src={selectedWork.media.src || selectedWork.thumbnailUrl}
+                                    alt={selectedWork.media.alt || selectedWork.title}
+                                    className="w-full h-full object-contain"
+                                />
+                            </div>
+                        )}
 
                         {/* Content Area */}
                         <div className="p-6 md:p-10 overflow-y-auto">
@@ -232,50 +185,37 @@ export const FeaturedWork: React.FC = () => {
                                 <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-semibold">
                                     {selectedWork.category}
                                 </span>
-                                {selectedWork.platform.map(p => (
-                                    <span key={p} className="px-3 py-1 border border-border rounded-full text-xs font-semibold text-muted-foreground">
-                                        {p}
-                                    </span>
-                                ))}
                             </div>
 
-                            <h2 className="text-2xl md:text-3xl font-heading font-bold mb-2">{selectedWork.title}</h2>
-                            <p className="text-lg text-muted-foreground mb-8">{selectedWork.description}</p>
+                            <div className="flex flex-col md:flex-row md:items-start justify-between gap-8">
+                                <div className="flex-1">
+                                    <h2 className="text-2xl md:text-3xl font-heading font-bold mb-2">{selectedWork.title}</h2>
+                                    {selectedWork.description && <p className="text-lg text-muted-foreground mb-4">{selectedWork.description}</p>}
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div className="space-y-6">
-                                    <div>
-                                        <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
-                                            <Briefcase className="w-4 h-4" /> Client / Brand
-                                        </h4>
-                                        <p className="text-lg font-medium">{selectedWork.brand}</p>
-                                    </div>
-                                    <div>
-                                        <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
-                                            <User className="w-4 h-4" /> Creator / Talent
-                                        </h4>
-                                        <p className="text-lg font-medium">{selectedWork.creator}</p>
-                                    </div>
-                                    <div>
-                                        <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-                                            My Role (Deliverables)
-                                        </h4>
-                                        <div className="flex flex-wrap gap-2">
-                                            {selectedWork.role.map(r => (
-                                                <span key={r} className="px-3 py-1.5 bg-secondary text-secondary-foreground text-sm rounded-md font-medium">
-                                                    {r}
+                                    {selectedWork.tags && selectedWork.tags.length > 0 && (
+                                        <div className="flex flex-wrap gap-2 mt-4">
+                                            {selectedWork.tags.map(tag => (
+                                                <span key={tag} className="px-3 py-1 bg-secondary text-secondary-foreground text-xs font-medium rounded-full">
+                                                    #{tag}
                                                 </span>
                                             ))}
                                         </div>
-                                    </div>
+                                    )}
                                 </div>
-
-                                <div className="bg-muted p-6 rounded-2xl border border-border">
-                                    <h4 className="font-heading font-bold text-lg mb-3">Goal / Result</h4>
-                                    <p className="text-muted-foreground">{selectedWork.goal}</p>
-                                    <p className="text-sm italic text-muted-foreground mt-4 pt-4 border-t border-border/50">
-                                        Year Delivered: {selectedWork.year}
-                                    </p>
+                                <div className="md:w-1/3 bg-muted p-6 rounded-2xl border border-border">
+                                    {selectedWork.brand && (
+                                        <div>
+                                            <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-2">
+                                                <Briefcase className="w-4 h-4" /> Client / Brand
+                                            </h4>
+                                            <p className="text-lg font-medium">{selectedWork.brand}</p>
+                                        </div>
+                                    )}
+                                    {selectedWork.year && (
+                                        <p className={`text-sm italic text-muted-foreground mt-4 pt-4 ${selectedWork.brand ? 'border-t border-border/50' : ''}`}>
+                                            Year Delivered: {selectedWork.year}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         </div>

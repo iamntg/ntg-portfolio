@@ -37,9 +37,9 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
                         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                        className="fixed left-1/2 top-1/2 z-50 w-full max-w-4xl -translate-x-1/2 -translate-y-1/2 p-4 md:p-6"
+                        className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-12 pointer-events-none"
                     >
-                        <div className="relative flex max-h-[90vh] flex-col overflow-hidden rounded-3xl bg-card border border-border shadow-2xl">
+                        <div className="relative flex w-full max-w-4xl max-h-[90vh] flex-col overflow-hidden rounded-3xl bg-card border border-border shadow-2xl pointer-events-auto">
                             <button
                                 onClick={onClose}
                                 className="absolute right-4 top-4 z-10 rounded-full bg-black/20 p-2 text-white backdrop-blur-md hover:bg-black/40 transition-colors"

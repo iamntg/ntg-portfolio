@@ -1,6 +1,7 @@
 import { Navbar } from './components/layout/Navbar';
 import { Hero } from './components/layout/Hero';
 import { FeaturedWork } from './components/layout/FeaturedWork';
+import { PhotographySection } from './components/layout/PhotographySection';
 import { Services } from './components/layout/Services';
 import { Process } from './components/layout/Process';
 import { About } from './components/layout/About';
@@ -16,6 +17,7 @@ function App() {
       <main className="flex-1">
         <Hero />
         <FeaturedWork />
+        <PhotographySection />
         <Services />
         <Process />
         <About />
