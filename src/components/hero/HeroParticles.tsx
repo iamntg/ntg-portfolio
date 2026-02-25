@@ -4,7 +4,6 @@ import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 const CONFIG = {
     enabled: true,
     maxParticles: 240, // Increased for denser feel
-    spawnRateMs: 24,
     ambientRateMs: 400, // Faster ambient spawning
     clusterChance: 0.3, // 30% chance to spawn a group
     opacity: 0.28,
@@ -15,8 +14,6 @@ const CONFIG = {
     minSize: 1.2,
     maxSize: 4,
     velocityScale: 0.4,
-    attractionRadius: 250,
-    attractionForce: 0.02,
 };
 
 interface Particle {
@@ -35,9 +32,7 @@ interface Particle {
 export const HeroParticles: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const particles = useRef<Particle[]>([]);
-    const lastSpawnTime = useRef<number>(0);
     const lastAmbientSpawnTime = useRef<number>(0);
-    const mouseRef = useRef({ x: 0, y: 0, active: false });
     const containerRef = useRef<HTMLDivElement>(null);
     const isVisible = useRef(true);
     const isBooted = useRef(false); // Deferred boot flag
@@ -150,20 +145,6 @@ export const HeroParticles: React.FC = () => {
                 const p = particles.current[i];
                 if (!p.active) continue;
 
-                // Attraction Logic
-                if (mouseRef.current.active) {
-                    const dx = mouseRef.current.x - p.x;
-                    const dy = mouseRef.current.y - p.y;
-                    const distanceSq = dx * dx + dy * dy; // Use distance squared to avoid Math.sqrt
-
-                    if (distanceSq < CONFIG.attractionRadius * CONFIG.attractionRadius) {
-                        const distance = Math.sqrt(distanceSq);
-                        const force = (1 - distance / CONFIG.attractionRadius) * CONFIG.attractionForce;
-                        p.vx += dx * force;
-                        p.vy += dy * force;
-                    }
-                }
-
                 p.x += p.vx;
                 p.y += p.vy;
                 p.vx *= 0.98;
@@ -208,51 +189,7 @@ export const HeroParticles: React.FC = () => {
         return () => cancelAnimationFrame(animationFrameId);
     }, [spawnParticle, prefersReducedMotion]);
 
-    useEffect(() => {
-        const handleMove = (e: MouseEvent | TouchEvent) => {
-            if (!isVisible.current || !CONFIG.enabled || prefersReducedMotion || !isBooted.current) return;
 
-            const canvas = canvasRef.current;
-            if (!canvas) return;
-
-            const rect = canvas.getBoundingClientRect();
-            let x, y;
-
-            if ('touches' in e) {
-                x = e.touches[0].clientX - rect.left;
-                y = e.touches[0].clientY - rect.top;
-            } else {
-                x = e.clientX - rect.left;
-                y = e.clientY - rect.top;
-            }
-
-            mouseRef.current = { x, y, active: true };
-
-            if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
-                const now = Date.now();
-                if (now - lastSpawnTime.current > CONFIG.spawnRateMs) {
-                    spawnParticle(x, y);
-                    lastSpawnTime.current = now;
-                }
-            } else {
-                mouseRef.current.active = false;
-            }
-        };
-
-        const handleLeave = () => {
-            mouseRef.current.active = false;
-        };
-
-        window.addEventListener('mousemove', handleMove);
-        window.addEventListener('touchmove', handleMove);
-        window.addEventListener('mouseleave', handleLeave);
-
-        return () => {
-            window.removeEventListener('mousemove', handleMove);
-            window.removeEventListener('touchmove', handleMove);
-            window.removeEventListener('mouseleave', handleLeave);
-        };
-    }, [spawnParticle, prefersReducedMotion]);
 
     if (prefersReducedMotion) {
         return (
