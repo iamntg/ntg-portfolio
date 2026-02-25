@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Masonry from 'react-masonry-css';
 import { X, ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
+import { Instagram } from '@/components/ui/BrandIcons';
 import { Section } from './Section';
 import { portfolioWork } from '../../data/work';
+import { InstagramCarouselGrid } from '../photography/InstagramCarouselGrid';
+import { Button } from '../ui/Button';
 
 export const PhotographySection: React.FC = () => {
     // Filter out only photography items
@@ -45,49 +48,70 @@ export const PhotographySection: React.FC = () => {
         };
     }, [selectedIndex]);
 
-    if (photoProjects.length === 0) return null;
-
     return (
         <Section id="photography" className="bg-background relative pt-10">
             <div className="mb-12 max-w-4xl mx-auto text-center">
                 <h2 className="text-3xl md:text-5xl font-heading font-bold mb-6">Photography</h2>
                 <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                    A collection of editorial, commercial, and portrait photography showcasing narrative-driven still imagery.
+                    A collection of editorial, commercial, and portrait photography showcasing still imagery.
                 </p>
             </div>
+            {photoProjects.length > 0 && (
+                <Masonry
+                    breakpointCols={breakpointColumnsObj}
+                    className="flex -ml-4 w-auto"
+                    columnClassName="pl-4 bg-clip-padding"
+                >
+                    {photoProjects.map((project, idx) => (
+                        <motion.div
+                            key={project.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: idx * 0.1, duration: 0.5 }}
+                            className="mb-4 relative group cursor-pointer overflow-hidden rounded-xl bg-muted"
+                            onClick={() => setSelectedIndex(idx)}
+                        >
+                            <img
+                                src={project.thumbnailUrl}
+                                alt={project.title}
+                                loading="lazy"
+                                className="w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                                <h3 className="text-white font-heading font-semibold text-xl mb-1">{project.title}</h3>
+                                <p className="text-white/80 text-sm">{project.brand}</p>
+                            </div>
+                        </motion.div>
+                    ))}
+                </Masonry>
+            )}
 
-            <Masonry
-                breakpointCols={breakpointColumnsObj}
-                className="flex -ml-4 w-auto"
-                columnClassName="pl-4 bg-clip-padding"
-            >
-                {photoProjects.map((project, idx) => (
-                    <motion.div
-                        key={project.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: idx * 0.1, duration: 0.5 }}
-                        className="mb-4 relative group cursor-pointer overflow-hidden rounded-xl bg-muted"
-                        onClick={() => setSelectedIndex(idx)}
+            {/* Instagram Carousels Section */}
+            <div className={`max-w-4xl mx-auto text-center ${photoProjects.length > 0 ? 'mt-32' : 'mt-10'}`}>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-muted text-muted-foreground text-xs font-medium mb-6 uppercase tracking-wider border border-border/50">
+                    <Instagram className="w-3 h-3" />
+                    <span>Instagram Carousels</span>
+                </div>
+
+                <InstagramCarouselGrid />
+
+                <div className="mt-16">
+                    <Button
+                        variant="outline"
+                        size="lg"
+                        className="group rounded-full px-8"
+                        onClick={() => window.open('https://instagram.com/eye.of.ntg', '_blank', 'noopener,noreferrer')}
                     >
-                        <img
-                            src={project.thumbnailUrl}
-                            alt={project.title}
-                            loading="lazy"
-                            className="w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                            <h3 className="text-white font-heading font-semibold text-xl mb-1">{project.title}</h3>
-                            <p className="text-white/80 text-sm">{project.brand}</p>
-                        </div>
-                    </motion.div>
-                ))}
-            </Masonry>
+                        <Instagram className="mr-2 w-4 h-4" />
+                        <span>View more on Instagram</span>
+                    </Button>
+                </div>
+            </div>
 
             {/* Lightbox Modal */}
             <AnimatePresence>
-                {selectedIndex !== null && (
+                {selectedIndex !== null && photoProjects[selectedIndex] && (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
