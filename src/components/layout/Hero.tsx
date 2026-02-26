@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import { heroContent } from '@/data';
@@ -7,17 +7,26 @@ import { scrollToSection } from '@/utils/scroll';
 import { HeroParticles } from '@/components/hero/HeroParticles';
 
 export const Hero: React.FC = () => {
+    // Mount particles only after the hero text has been committed to the DOM.
+    // This keeps particles off the critical render path without a hard delay.
+    const [showParticles, setShowParticles] = useState(false);
+    useEffect(() => {
+        // RAF ensures we're past the first paint before spawning the canvas
+        const id = requestAnimationFrame(() => setShowParticles(true));
+        return () => cancelAnimationFrame(id);
+    }, []);
+
     return (
         <section id="hero" className="relative min-h-screen flex items-center pt-32 pb-20 justify-center overflow-hidden isolation-auto [isolation:isolate]">
-            {/* Interactive Particle Background - fills the whole section */}
-            <HeroParticles />
+            {/* Particle canvas — lazy-mounted after first paint */}
+            {showParticles && <HeroParticles />}
 
-            {/* Background with subtle gradient - fills the whole section */}
+            {/* Background gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-secondary/30 -z-20" />
 
-            {/* Decorative Blur Orbs - positioned relative to the whole section */}
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full mix-blend-multiply filter blur-[128px] opacity-70 animate-pulse -z-20 dark:opacity-30" />
-            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/30 rounded-full mix-blend-multiply filter blur-[128px] opacity-70 animate-pulse -z-20 dark:opacity-30" />
+            {/* Decorative blur orbs — contain will-change to these elements only */}
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full mix-blend-multiply filter blur-[128px] opacity-70 animate-pulse -z-20 dark:opacity-30 [will-change:opacity]" />
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/30 rounded-full mix-blend-multiply filter blur-[128px] opacity-70 animate-pulse -z-20 dark:opacity-30 [will-change:opacity]" />
 
             <div className="container mx-auto px-4 md:px-6 relative z-10">
                 <div className="max-w-4xl mx-auto text-center">
@@ -25,6 +34,7 @@ export const Hero: React.FC = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, ease: "easeOut" }}
+                        style={{ willChange: 'opacity, transform' }}
                     >
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs md:text-sm font-medium mb-8">
                             <span className="relative flex h-2 w-2">
@@ -35,10 +45,16 @@ export const Hero: React.FC = () => {
                         </div>
                     </motion.div>
 
+                    {/*
+                      h1 = LCP element. Render it visible immediately — no opacity:0 initial.
+                      The motion wrapper still handles the subtle y-slide for polish,
+                      but the text is paint-visible on frame 1 so Lighthouse/CWV sees it.
+                    */}
                     <motion.h1
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 1, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
+                        style={{ willChange: 'transform' }}
                         className="text-balance text-4xl md:text-6xl lg:text-7xl font-heading font-bold tracking-tight mb-6"
                     >
                         {heroContent.headline}
@@ -48,7 +64,8 @@ export const Hero: React.FC = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-                        className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto text-balance"
+                        style={{ willChange: 'opacity, transform' }}
+                        className="text-lg md:text-xl text-muted-foreground mb-10 mx-auto text-balance"
                     >
                         {heroContent.subheadline}
                     </motion.p>
@@ -57,6 +74,7 @@ export const Hero: React.FC = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+                        style={{ willChange: 'opacity, transform' }}
                         className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
                     >
                         <Button size="lg" className="w-full sm:w-auto h-12 px-8 text-base" onClick={(e) => scrollToSection(e, "#work")}>
@@ -71,6 +89,7 @@ export const Hero: React.FC = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.8, delay: 0.6 }}
+                        style={{ willChange: 'opacity' }}
                         className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground"
                     >
                         {heroContent.badges.map((badge, index) => (

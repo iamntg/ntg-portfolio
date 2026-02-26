@@ -6,6 +6,7 @@ import { portfolioWork, brands, type WorkItem } from '@/data/work';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { VideoEmbed } from '@/components/media/VideoEmbed';
+import { OptimizedImage } from '@/components/ui/OptimizedImage';
 
 export const FeaturedWork: React.FC = () => {
     const [activeCategory, setActiveCategory] = useState<string>('All');
@@ -96,11 +97,13 @@ export const FeaturedWork: React.FC = () => {
                             className="group cursor-pointer relative rounded-2xl overflow-hidden bg-background border border-border shadow-sm hover:shadow-xl transition-all duration-300"
                         >
                             <div className="relative aspect-[4/5] overflow-hidden bg-muted">
-                                <img
+                                <OptimizedImage
                                     src={project.thumbnailUrl}
                                     alt={project.title}
-                                    className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
+                                    aspectRatio="4/5"
                                     loading="lazy"
+                                    className="transition-transform duration-700 group-hover:scale-105"
+                                    wrapperClassName="absolute inset-0"
                                 />
 
                                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
@@ -171,10 +174,13 @@ export const FeaturedWork: React.FC = () => {
 
                         {selectedWork.media.type === 'image' && (
                             <div className="w-full h-[60vh] md:h-[80vh] bg-black border-b border-border flex items-center justify-center">
-                                <img
+                                <OptimizedImage
                                     src={selectedWork.media.src || selectedWork.thumbnailUrl}
                                     alt={selectedWork.media.alt || selectedWork.title}
-                                    className="w-full h-full object-contain"
+                                    loading="eager"
+                                    fetchPriority="high"
+                                    className="object-contain"
+                                    showSkeleton={false}
                                 />
                             </div>
                         )}

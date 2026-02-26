@@ -99,7 +99,7 @@ export const services = [
         description: "Cinematic recap video capturing the essence of your intimate event or launch.",
         included: [
             "Up to 4 hours of event coverage",
-            "1-min cinematic highlight reel & audio",
+            "2-5 min cinematic highlight reel & audio",
             "Typical turnaround: 5-7 days"
         ],
     },

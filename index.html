@@ -3,9 +3,102 @@
 
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="icon" type="image/svg+xml" href="/n.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ntg-portfolio</title>
+  <title>Nebulatic Studio — Videographer in Calgary | Cinematic Reels & Brand Content</title>
+  <meta name="description"
+    content="Professional videographer in Calgary specializing in influencer campaigns, brand content, and cinematic reels." />
+  <link rel="canonical" href="https://nebulatic.studio" />
+
+  <!-- OpenGraph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://nebulatic.studio" />
+  <meta property="og:title" content="Nebulatic Studio — Videographer in Calgary | Cinematic Reels & Brand Content" />
+  <meta property="og:description"
+    content="Professional videographer in Calgary specializing in influencer campaigns, brand content, and cinematic reels." />
+  <meta property="og:image" content="https://nebulatic.studio/og-image.jpg" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://nebulatic.studio" />
+  <meta property="twitter:title"
+    content="Nebulatic Studio — Videographer in Calgary | Cinematic Reels & Brand Content" />
+  <meta property="twitter:description"
+    content="Professional videographer in Calgary specializing in influencer campaigns, brand content, and cinematic reels." />
+  <meta property="twitter:image" content="https://nebulatic.studio/og-image.jpg" />
+
+  <!-- ① Establish connections to Google Fonts CDN as early as possible -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!--
+    ② Non-render-blocking font load:
+       media="print" makes the browser fetch the stylesheet without blocking render.
+       onload switches it to media="all" once the download is done.
+       display=swap ensures text is visible in the fallback font instantly.
+  -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap"
+    media="print" onload="this.media='all'" />
+
+  <!-- ③ <noscript> fallback for users/crawlers with JS disabled -->
+  <noscript>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" />
+  </noscript>
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "Nebulatic Studio",
+      "image": "https://nebulatic.studio/og-image.jpg",
+      "url": "https://nebulatic.studio",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Calgary",
+        "addressRegion": "AB",
+        "addressCountry": "CA"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 51.0447,
+        "longitude": -114.0719
+      },
+      "description": "Professional videographer in Calgary specializing in influencer campaigns, brand content, and cinematic reels.",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Creative Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Videography"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Photography"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Brand Content"
+            }
+          }
+        ]
+      }
+    }
+  </script>
 </head>
 
 <body>

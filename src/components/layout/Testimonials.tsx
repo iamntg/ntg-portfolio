@@ -2,6 +2,7 @@ import React from 'react';
 import { Section } from './Section';
 import { testimonials } from '../../data';
 import { Quote } from 'lucide-react';
+import { OptimizedImage } from '@/components/ui/OptimizedImage';
 
 export const Testimonials: React.FC = () => {
     return (
@@ -26,11 +27,14 @@ export const Testimonials: React.FC = () => {
                         </p>
 
                         <div className="flex items-center gap-4 mt-auto">
-                            <div className="w-12 h-12 rounded-full overflow-hidden bg-muted border border-border">
-                                <img
+                            <div className="w-12 h-12 rounded-full overflow-hidden bg-muted border border-border flex-shrink-0">
+                                <OptimizedImage
                                     src={testimonial.avatar}
                                     alt={testimonial.name}
-                                    className="w-full h-full object-cover filter grayscale" // Grayscale until real photos added
+                                    intrinsicWidth={48}
+                                    intrinsicHeight={48}
+                                    loading="lazy"
+                                    className="filter grayscale"
                                 />
                             </div>
                             <div>

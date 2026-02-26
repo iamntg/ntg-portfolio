@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
 import { Instagram } from '@/components/ui/BrandIcons';
 import { instagramCarousels } from '@/data/instagramCarousels';
+import { OptimizedImage } from '@/components/ui/OptimizedImage';
 
 export const InstagramCarouselGrid: React.FC = () => {
     // Shuffle the array once when the component mounts
@@ -27,11 +28,13 @@ export const InstagramCarouselGrid: React.FC = () => {
                     onClick={() => handleOpenPost(post.postUrlKey)}
                 >
                     {/* Thumbnail */}
-                    <img
+                    <OptimizedImage
                         src={post.thumbnailUrl}
                         alt={post.title}
+                        aspectRatio="1/1"
                         loading="lazy"
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        className="transition-transform duration-700 group-hover:scale-110"
+                        wrapperClassName="absolute inset-0"
                     />
 
                     {/* Instagram Icon Overlay (always visible but subtle) */}

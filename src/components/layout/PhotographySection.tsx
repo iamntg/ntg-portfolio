@@ -7,6 +7,7 @@ import { Section } from './Section';
 import { portfolioWork } from '../../data/work';
 import { InstagramCarouselGrid } from '../photography/InstagramCarouselGrid';
 import { Button } from '../ui/Button';
+import { OptimizedImage } from '@/components/ui/OptimizedImage';
 
 export const PhotographySection: React.FC = () => {
     // Filter out only photography items
@@ -72,11 +73,11 @@ export const PhotographySection: React.FC = () => {
                             className="mb-4 relative group cursor-pointer overflow-hidden rounded-xl bg-muted"
                             onClick={() => setSelectedIndex(idx)}
                         >
-                            <img
+                            <OptimizedImage
                                 src={project.thumbnailUrl}
                                 alt={project.title}
                                 loading="lazy"
-                                className="w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                className="transition-transform duration-700 group-hover:scale-105"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
                                 <h3 className="text-white font-heading font-semibold text-xl mb-1">{project.title}</h3>
@@ -88,7 +89,7 @@ export const PhotographySection: React.FC = () => {
             )}
 
             {/* Instagram Carousels Section */}
-            <div className={`max-w-4xl mx-auto text-center ${photoProjects.length > 0 ? 'mt-32' : 'mt-10'}`}>
+            <div className={`max-w-6xl mx-auto text-center ${photoProjects.length > 0 ? 'mt-32' : 'mt-10'}`}>
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-muted text-muted-foreground text-xs font-medium mb-6 uppercase tracking-wider border border-border/50">
                     <Instagram className="w-3 h-3" />
                     <span>Instagram Carousels</span>
@@ -155,16 +156,23 @@ export const PhotographySection: React.FC = () => {
                             className="relative w-full h-full p-4 md:p-20 flex items-center justify-center"
                             onClick={(e) => e.stopPropagation()} // Prevent click propagating to modal backdrop
                         >
-                            <motion.img
-                                key={selectedIndex} // Triggers animation on change
+                            <motion.div
+                                key={selectedIndex}
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.95 }}
                                 transition={{ duration: 0.3 }}
-                                src={photoProjects[selectedIndex].thumbnailUrl}
-                                alt={photoProjects[selectedIndex].title}
-                                className="max-w-full max-h-full object-contain"
-                            />
+                                className="max-w-full max-h-full"
+                            >
+                                <OptimizedImage
+                                    src={photoProjects[selectedIndex].thumbnailUrl}
+                                    alt={photoProjects[selectedIndex].title}
+                                    loading="eager"
+                                    fetchPriority="high"
+                                    showSkeleton={false}
+                                    className="max-w-full max-h-full object-contain"
+                                />
+                            </motion.div>
 
                             {/* Caption overlay */}
                             <motion.div
