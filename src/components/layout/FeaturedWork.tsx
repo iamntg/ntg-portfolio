@@ -1,79 +1,95 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Search, Filter, Image as ImageIcon, Video, Briefcase } from 'lucide-react';
+import { Play, Search, Briefcase, ChevronDown, ChevronUp, X } from 'lucide-react';
 import { Section } from './Section';
-import { portfolioWork, brands, type WorkItem } from '@/data/work';
+import { portfolioWork, type WorkItem, type Category } from '@/data/work';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { VideoEmbed } from '@/components/media/VideoEmbed';
 import { OptimizedImage } from '@/components/ui/OptimizedImage';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 export const FeaturedWork: React.FC = () => {
-    const [activeCategory, setActiveCategory] = useState<string>('All');
+    const [activeCategory, setActiveCategory] = useState<Category>('All');
     const [searchQuery, setSearchQuery] = useState('');
-
     const [selectedWork, setSelectedWork] = useState<WorkItem | null>(null);
+    const [isExpanded, setIsExpanded] = useState(false);
 
-    const categories = ['All', 'Brand Campaigns', 'Events & Festivals', 'Creative / Model Work', 'YouTube & Cinematic'];
+    const isMobile = useMediaQuery('(max-width: 767px)');
 
-    const filteredProjects = useMemo(() => {
-        return portfolioWork.filter(p => {
-            if (p.category === 'Photography') return false;
-            const matchCategory = activeCategory === 'All' || p.category === activeCategory;
-            const matchSearch = p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                (p.brand?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false);
+    const categories: Category[] = ['All', 'Brand Campaigns', 'Events & Festivals', 'Creative / Model Work', 'YouTube & Cinematic'];
 
-            return matchCategory && matchSearch;
+    const filteredWork = useMemo(() => {
+        return portfolioWork.filter(project => {
+            const matchesCategory = activeCategory === 'All' || project.category === activeCategory;
+            const matchesSearch = searchQuery === '' ||
+                project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                project.brand?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                project.description?.toLowerCase().includes(searchQuery.toLowerCase());
+            return matchesCategory && matchesSearch;
         });
     }, [activeCategory, searchQuery]);
 
+    const visibleItems = useMemo(() => {
+        if (isMobile && !isExpanded) {
+            return filteredWork.slice(0, 4);
+        }
+        return filteredWork;
+    }, [isMobile, isExpanded, filteredWork]);
+
     return (
-        <Section id="work" className="bg-secondary/30 relative">
-
-            {/* 1. Header & Brand Pills */}
-            <div className="mb-16 max-w-4xl mx-auto text-center">
-                <h2 className="text-3xl md:text-5xl font-heading font-bold mb-6">Brand Campaign Experience</h2>
-                <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                    Commercial and influencer-led brand campaign content shot, edited, and delivered for social media and digital platforms.
-                </p>
-
-                <div className="bg-card border border-border rounded-2xl p-6 md:p-8 shadow-sm">
-                    <div className="flex flex-wrap items-center justify-center gap-3">
-                        {brands.map(brand => (
-                            <span key={brand} className="px-4 py-2 bg-secondary text-secondary-foreground text-sm font-semibold rounded-full border border-border/50">
-                                {brand}
-                            </span>
-                        ))}
+        <Section id="work" className="overflow-hidden">
+            <div className="flex flex-col gap-12 mb-12 md:mb-20">
+                <div className="flex flex-col md:flex-col md:items-center gap-8">
+                    <div className="flex flex-col max-w-4xl items-center justify-center">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-6 uppercase tracking-widest border border-primary/20">
+                            <Briefcase className="w-3" />
+                            <span>Featured Work</span>
+                        </div>
+                        <h2 className="text-4xl md:text-6xl font-heading font-black mb-6 tracking-tight text-balance">
+                            Crafting Visual <span className="text-primary italic">Narratives</span>
+                        </h2>
+                        <p className="text-xl text-muted-foreground leading-relaxed text-balance">
+                            A curated selection of high-impact visual stories for global brands and visionary artists.
+                        </p>
                     </div>
-                </div>
-            </div>
 
-            {/* 2. Filters & Search */}
-            <div className="mb-10 flex flex-col gap-6">
-                {/* Search */}
-                <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-                    <div className="relative w-full md:w-96">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    {/* Search Bar */}
+                    <div className="relative w-full md:w-80 group">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
                         <input
                             type="text"
-                            placeholder="Search campaigns, brands..."
+                            placeholder="Search projects..."
                             value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 bg-background border border-border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                            onChange={(e) => {
+                                setSearchQuery(e.target.value);
+                                setIsExpanded(true); // Auto-expand when searching
+                            }}
+                            className="w-full pl-11 pr-11 py-3 bg-muted/30 hover:bg-muted/50 focus:bg-background border border-border/50 focus:border-primary/50 rounded-2xl text-sm transition-all outline-none focus:ring-4 focus:ring-primary/5 shadow-sm"
                         />
+                        {searchQuery && (
+                            <button
+                                onClick={() => setSearchQuery('')}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 p-1 hover:bg-muted rounded-full transition-colors"
+                            >
+                                <X className="w-3 h-3 text-muted-foreground" />
+                            </button>
+                        )}
                     </div>
                 </div>
 
-                {/* Primary Categories */}
-                <div className="flex flex-wrap items-center gap-2">
-                    <Filter className="w-4 h-4 text-muted-foreground mr-2 hidden sm:block" />
-                    {categories.map(category => (
+                {/* Filter Tabs */}
+                <div className="flex items-center gap-2 p-1.5 bg-muted/50 backdrop-blur-sm rounded-2xl border border-border overflow-x-auto no-scrollbar">
+                    {categories.map((category) => (
                         <button
                             key={category}
-                            onClick={() => setActiveCategory(category)}
-                            className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${activeCategory === category
-                                ? 'bg-primary text-primary-foreground shadow-md'
-                                : 'bg-background hover:bg-accent hover:text-accent-foreground border border-border'
+                            onClick={() => {
+                                setActiveCategory(category);
+                                setIsExpanded(false); // Reset expansion when changing category
+                            }}
+                            className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 whitespace-nowrap ${activeCategory === category
+                                ? 'bg-background text-foreground shadow-lg scale-[1.02]'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                                 }`}
                         >
                             {category}
@@ -82,17 +98,20 @@ export const FeaturedWork: React.FC = () => {
                 </div>
             </div>
 
-            {/* 3. Grid */}
-            <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                <AnimatePresence mode="popLayout">
-                    {filteredProjects.map((project) => (
+            {/* Work Grid */}
+            <motion.div
+                layout
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-8"
+            >
+                <AnimatePresence mode='popLayout'>
+                    {visibleItems.map((project, idx) => (
                         <motion.div
+                            key={project.id}
                             layout
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.95 }}
-                            transition={{ duration: 0.3 }}
-                            key={project.id}
+                            transition={{ duration: 0.4, delay: idx * 0.05 }}
                             onClick={() => setSelectedWork(project)}
                             className="group cursor-pointer relative rounded-2xl overflow-hidden bg-background border border-border shadow-sm hover:shadow-xl transition-all duration-300"
                         >
@@ -107,69 +126,115 @@ export const FeaturedWork: React.FC = () => {
                                 />
 
                                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                                    <div className="w-16 h-16 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center text-white border border-white/50 transform scale-75 group-hover:scale-100 transition-all duration-300">
-                                        {(project.media.type === 'mp4' || project.media.type === 'youtube') ? (
-                                            <Play className="w-6 h-6 ml-1 fill-white" />
+                                    <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center transform scale-90 group-hover:scale-100 transition-transform duration-500">
+                                        {project.media.type === 'mp4' || project.media.type === 'youtube' ? (
+                                            <Play className="w-6 h-6 text-white fill-white" />
                                         ) : (
-                                            <ImageIcon className="w-6 h-6 text-white" />
+                                            <Search className="w-6 h-6 text-white" />
                                         )}
                                     </div>
                                 </div>
-
-                                <div className="absolute top-4 right-4 flex flex-col gap-2">
-                                    <span className="px-3 py-1 bg-background/90 backdrop-blur-md rounded-full text-xs font-semibold shadow-sm">
-                                        {project.category}
-                                    </span>
-                                </div>
-
-                                <div className="absolute top-4 left-4">
-                                    {(project.media.type === 'mp4' || project.media.type === 'youtube') ? (
-                                        <div className="px-2 py-1 bg-black/50 backdrop-blur-md text-white rounded text-xs flex items-center gap-1">
-                                            <Video className="w-3 h-3" /> Video
-                                        </div>
-                                    ) : (
-                                        <div className="px-2 py-1 bg-black/50 backdrop-blur-md text-white rounded text-xs flex items-center gap-1">
-                                            <ImageIcon className="w-3 h-3" /> Photo
-                                        </div>
-                                    )}
-                                </div>
                             </div>
 
-                            <div className="p-6">
-                                <h3 className="text-xl font-heading font-semibold mb-1 line-clamp-1">{project.title}</h3>
-                                {project.brand && <p className="text-sm font-medium text-primary mb-3">{project.brand}</p>}
-                                {project.description && <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{project.description}</p>}
+                            <div className="p-8">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <span className="text-[10px] uppercase tracking-[0.2em] font-black text-primary bg-primary/5 px-2.5 py-1 rounded">
+                                        {project.category}
+                                    </span>
+                                    <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground">
+                                        {project.media.type.toUpperCase()}
+                                    </span>
+                                </div>
+                                <h3 className="text-2xl font-heading font-black mb-3 group-hover:text-primary transition-colors duration-300 line-clamp-1">
+                                    {project.title}
+                                </h3>
+                                <p className="text-muted-foreground line-clamp-2 text-balance leading-relaxed">
+                                    {project.description}
+                                </p>
                             </div>
                         </motion.div>
                     ))}
-                    {filteredProjects.length === 0 && (
-                        <motion.div
-                            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                            className="col-span-full py-20 text-center flex flex-col items-center justify-center"
-                        >
-                            <Search className="w-12 h-12 text-muted mb-4" />
-                            <h3 className="text-xl font-heading font-semibold mb-2">No projects found</h3>
-                            <p className="text-muted-foreground">Try adjusting your filters or search query.</p>
-                            <Button variant="outline" className="mt-6" onClick={() => {
-                                setSearchQuery('');
-                                setActiveCategory('All');
-                            }}>
-                                Clear Filters
-                            </Button>
-                        </motion.div>
-                    )}
                 </AnimatePresence>
             </motion.div>
 
-            {/* 4. Modal View */}
-            <Modal isOpen={!!selectedWork} onClose={() => setSelectedWork(null)}>
+            {/* Empty State */}
+            {filteredWork.length === 0 && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="py-20 text-center"
+                >
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-6">
+                        <Search className="w-6 h-6 text-muted-foreground" />
+                    </div>
+                    <h3 className="text-2xl font-heading font-black mb-2">No projects found</h3>
+                    <p className="text-muted-foreground mb-8">Try adjusting your search or filters.</p>
+                    <Button
+                        variant="outline"
+                        onClick={() => {
+                            setSearchQuery('');
+                            setActiveCategory('All');
+                        }}
+                        className="rounded-full px-8"
+                    >
+                        Clear all filters
+                    </Button>
+                </motion.div>
+            )}
+
+            {/* Show More Button (Mobile Only) */}
+            {isMobile && filteredWork.length > 4 && searchQuery === '' && (
+                <motion.div
+                    layout
+                    className="mt-12 flex justify-center"
+                >
+                    <Button
+                        variant="outline"
+                        size="lg"
+                        onClick={() => setIsExpanded(!isExpanded)}
+                        className="rounded-full px-8 py-6 font-bold flex items-center gap-2 group border-2"
+                        aria-expanded={isExpanded}
+                    >
+                        {isExpanded ? (
+                            <>
+                                <span>Show Less</span>
+                                <ChevronUp className="w-4 h-4 transition-transform group-hover:-translate-y-1" />
+                            </>
+                        ) : (
+                            <>
+                                <span>Show More Projects</span>
+                                <ChevronDown className="w-4 h-4 transition-transform group-hover:translate-y-1" />
+                            </>
+                        )}
+                    </Button>
+                </motion.div>
+            )}
+
+            {/* Work Detail Modal */}
+            <Modal
+                isOpen={!!selectedWork}
+                onClose={() => setSelectedWork(null)}
+            >
                 {selectedWork && (
-                    <div className="flex flex-col bg-background h-full overflow-hidden">
-                        {/* Media Area */}
-                        {(selectedWork.media.type === 'mp4' || selectedWork.media.type === 'youtube') && (
-                            <div className="w-full bg-black relative flex items-center justify-center flex-shrink-0 flex-1 min-h-[40vh] md:min-h-0">
-                                <VideoEmbed media={selectedWork.media} orientation={selectedWork.orientation} title={selectedWork.title} />
+                    <div className="flex flex-col h-full overflow-y-auto no-scrollbar">
+                        {/* Media Section */}
+                        {selectedWork.media.type === 'mp4' && (
+                            <div className="w-full h-[60vh] md:h-[80vh] bg-black border-b border-border">
+                                <video
+                                    src={selectedWork.media.src}
+                                    controls
+                                    autoPlay
+                                    className="w-full h-full object-contain"
+                                />
                             </div>
+                        )}
+
+                        {selectedWork.media.type === 'youtube' && (
+                            <VideoEmbed
+                                media={selectedWork.media}
+                                orientation={selectedWork.orientation}
+                                title={selectedWork.title}
+                            />
                         )}
 
                         {selectedWork.media.type === 'image' && (
@@ -185,50 +250,43 @@ export const FeaturedWork: React.FC = () => {
                             </div>
                         )}
 
-                        {/* Content Area */}
-                        <div className="p-6 md:p-10 overflow-y-auto">
-                            <div className="flex flex-wrap gap-2 mb-4">
-                                <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-semibold">
+                        <div className="p-8 md:p-12 max-w-4xl mx-auto w-full">
+                            <div className="flex flex-wrap items-center gap-4 mb-8">
+                                <span className="px-4 py-1.5 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest border border-primary/20">
                                     {selectedWork.category}
+                                </span>
+                                <span className="text-muted-foreground text-sm font-medium">
+                                    {selectedWork.year} — {selectedWork.brand || 'Nebulatic'}
                                 </span>
                             </div>
 
-                            <div className="flex flex-col md:flex-row md:items-start justify-between gap-8">
-                                <div className="flex-1">
-                                    <h2 className="text-2xl md:text-3xl font-heading font-bold mb-2">{selectedWork.title}</h2>
-                                    {selectedWork.description && <p className="text-lg text-muted-foreground mb-4">{selectedWork.description}</p>}
+                            <h2 className="text-4xl md:text-6xl font-heading font-black mb-8 tracking-tighter">
+                                {selectedWork.title}
+                            </h2>
 
-                                    {selectedWork.tags && selectedWork.tags.length > 0 && (
-                                        <div className="flex flex-wrap gap-2 mt-4">
-                                            {selectedWork.tags.map(tag => (
-                                                <span key={tag} className="px-3 py-1 bg-secondary text-secondary-foreground text-xs font-medium rounded-full">
-                                                    #{tag}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    )}
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                                <div className="md:col-span-2">
+                                    <h4 className="text-sm font-black uppercase tracking-widest mb-4 opacity-50">Overview</h4>
+                                    <p className="text-xl text-muted-foreground leading-relaxed text-balance">
+                                        {selectedWork.description}
+                                    </p>
                                 </div>
-                                <div className="md:w-1/3 bg-muted p-6 rounded-2xl border border-border">
-                                    {selectedWork.brand && (
-                                        <div>
-                                            <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-2">
-                                                <Briefcase className="w-4 h-4" /> Client / Brand
-                                            </h4>
-                                            <p className="text-lg font-medium">{selectedWork.brand}</p>
-                                        </div>
-                                    )}
-                                    {selectedWork.year && (
-                                        <p className={`text-sm italic text-muted-foreground mt-4 pt-4 ${selectedWork.brand ? 'border-t border-border/50' : ''}`}>
-                                            Year Delivered: {selectedWork.year}
-                                        </p>
-                                    )}
+                                <div>
+                                    <h4 className="text-sm font-black uppercase tracking-widest mb-4 opacity-50">Focus Area</h4>
+                                    <ul className="space-y-3">
+                                        {selectedWork.tags?.map(tag => (
+                                            <li key={tag} className="flex items-center gap-3 text-foreground font-bold italic">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                                                {tag}
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
                 )}
             </Modal>
-
         </Section>
     );
 };

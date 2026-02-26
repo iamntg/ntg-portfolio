@@ -8,6 +8,7 @@ import { About } from './components/layout/About';
 import { Testimonials } from './components/layout/Testimonials';
 import { Contact } from './components/layout/Contact';
 import { Footer } from './components/layout/Footer';
+import { FloatingQuoteButton } from './components/ui/FloatingQuoteButton';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
       </main>
 
       <Footer />
+      <FloatingQuoteButton />
     </div>
   );
 }

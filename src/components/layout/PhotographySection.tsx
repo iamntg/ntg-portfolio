@@ -50,7 +50,7 @@ export const PhotographySection: React.FC = () => {
     }, [selectedIndex]);
 
     return (
-        <Section id="photography" className="bg-background relative pt-10">
+        <Section id="photography" className="bg-background relative pt-8">
             <div className="mb-12 max-w-4xl mx-auto text-center">
                 <h2 className="text-3xl md:text-5xl font-heading font-bold mb-6">Photography</h2>
                 <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
