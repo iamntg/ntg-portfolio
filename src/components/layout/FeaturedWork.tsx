@@ -8,12 +8,14 @@ import { Modal } from '@/components/ui/Modal';
 import { VideoEmbed } from '@/components/media/VideoEmbed';
 import { OptimizedImage } from '@/components/ui/OptimizedImage';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { MobileFilterSheet } from '@/components/work/MobileFilterSheet';
 
 export const FeaturedWork: React.FC = () => {
     const [activeCategory, setActiveCategory] = useState<Category>('All');
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedWork, setSelectedWork] = useState<WorkItem | null>(null);
     const [isExpanded, setIsExpanded] = useState(false);
+    const [filterOpen, setFilterOpen] = useState(false);
 
     const isMobile = useMediaQuery('(max-width: 767px)');
 
@@ -46,10 +48,10 @@ export const FeaturedWork: React.FC = () => {
                             <Briefcase className="w-3" />
                             <span>Featured Work</span>
                         </div>
-                        <h2 className="text-4xl md:text-6xl font-heading font-black mb-6 tracking-tight text-balance">
+                        <h2 className="text-3xl md:text-6xl font-heading text-center font-black mb-6 tracking-tight text-balance">
                             Crafting Visual <span className="text-primary italic">Narratives</span>
                         </h2>
-                        <p className="text-xl text-muted-foreground leading-relaxed text-balance">
+                        <p className="text-lg md:text-xl text-muted-foreground text-center leading-relaxed text-balance">
                             A curated selection of high-impact visual stories for global brands and visionary artists.
                         </p>
                     </div>
@@ -78,25 +80,49 @@ export const FeaturedWork: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Filter Tabs */}
-                <div className="flex items-center gap-2 p-1.5 bg-muted/50 backdrop-blur-sm rounded-2xl border border-border overflow-x-auto no-scrollbar">
-                    {categories.map((category) => (
+                {/* Filter Tabs / Mobile Button */}
+                {!isMobile ? (
+                    <div className="flex items-center justify-center gap-2 p-1.5 bg-muted/50 backdrop-blur-sm rounded-2xl border border-border overflow-x-auto no-scrollbar">
+                        {categories.map((category) => (
+                            <button
+                                key={category}
+                                onClick={() => {
+                                    setActiveCategory(category);
+                                    setIsExpanded(false); // Reset expansion when changing category
+                                }}
+                                className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 whitespace-nowrap ${activeCategory === category
+                                    ? 'bg-background text-foreground shadow-lg scale-[1.02]'
+                                    : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                                    }`}
+                            >
+                                {category}
+                            </button>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="flex justify-center">
                         <button
-                            key={category}
-                            onClick={() => {
-                                setActiveCategory(category);
-                                setIsExpanded(false); // Reset expansion when changing category
-                            }}
-                            className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 whitespace-nowrap ${activeCategory === category
-                                ? 'bg-background text-foreground shadow-lg scale-[1.02]'
-                                : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                                }`}
+                            onClick={() => setFilterOpen(true)}
+                            className="flex items-center gap-3 px-8 py-4 bg-muted/50 backdrop-blur-sm rounded-2xl border border-border text-foreground font-black hover:bg-muted transition-all active:scale-95"
                         >
-                            {category}
+                            <Search className="w-5 h-5 text-primary" />
+                            <span>Filter: {activeCategory}</span>
+                            <ChevronDown className="w-5 h-5 opacity-50" />
                         </button>
-                    ))}
-                </div>
+                    </div>
+                )}
             </div>
+
+            <MobileFilterSheet
+                isOpen={filterOpen}
+                onClose={() => setFilterOpen(false)}
+                categories={categories}
+                activeCategory={activeCategory}
+                onSelectCategory={(category) => {
+                    setActiveCategory(category);
+                    setIsExpanded(false);
+                }}
+            />
 
             {/* Work Grid */}
             <motion.div
