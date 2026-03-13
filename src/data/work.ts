@@ -6,15 +6,6 @@
 // 3. Image: Standard image entries for Photography or fallbacks.
 //    Add { type: "image", src: "image_url.jpg" } to the media property.
 
-import turoThumb from '@/assets/portfolio-imgs/turo.jpg';
-import vogueThumb from '@/assets/portfolio-imgs/vogue.jpg';
-import lagostinaThumb from '@/assets/portfolio-imgs/lagostina.jpg';
-import kohinoorThumb from '@/assets/portfolio-imgs/kohinoor.jpg';
-import crossironThumb from '@/assets/portfolio-imgs/crossiron.jpg';
-import homesenseThumb from '@/assets/portfolio-imgs/homesense.jpg';
-import fyiSunglassThumb from '@/assets/portfolio-imgs/fyi_sunglass.jpg';
-import newChapterThumb from '@/assets/portfolio-imgs/new_chapter.jpg';
-import heartwoodThumb from '@/assets/portfolio-imgs/heartwood.jpg';
 import stampedeVThumb from '@/assets/portfolio-imgs/stampede_v.jpg';
 import socalityThumb from '@/assets/portfolio-imgs/socality.jpg';
 import breezyThumb from '@/assets/portfolio-imgs/breezy.jpg';
@@ -24,9 +15,20 @@ import stampedeHThumb from '@/assets/portfolio-imgs/stampede_h.jpg';
 import theyyamThumb from '@/assets/portfolio-imgs/theyyam.jpg';
 import sakuraThumb from '@/assets/portfolio-imgs/sakura.jpg';
 import chinookThumb from '@/assets/portfolio-imgs/chinook.jpg';
+import duskyThumb from '@/assets/portfolio-imgs/dusky.jpg';
+import donHoney from '@/assets/portfolio-imgs/donHoney.jpg';
 
 
-export type Category = "All" | "Brand Campaigns" | "Events & Festivals" | "Creative / Model Work" | "YouTube & Cinematic" | "Photography";
+export const WORK_CATEGORIES = [
+    "All",
+    "Intimate Events",
+    "Events & Festivals",
+    "Creative / Model Work",
+    "YouTube & Cinematic",
+    "Brand Campaigns"
+] as const;
+
+export type Category = (typeof WORK_CATEGORIES)[number];
 export type Orientation = "vertical" | "horizontal";
 
 export interface WorkItem {
@@ -57,120 +59,6 @@ export const brands = [
 
 export const portfolioWork: WorkItem[] = [
     {
-        id: "1",
-        title: "Turo Summer Stampede Campaign",
-        category: "Brand Campaigns",
-        brand: "Turo",
-        year: "2024",
-        description: "Energetic and visually stunning campaign highlighting premium vehicle rentals for summer road trips. Delivered across multiple social channels.",
-        tags: ["IG Reel", "TikTok"],
-        thumbnailUrl: turoThumb,
-        orientation: "vertical",
-        media: {
-            type: "youtube",
-            id: "4P2_f4cFgk4" // Vertical Short or reel ID
-        }
-    },
-    {
-        id: "2",
-        title: "Vogue Eyewear | FYidoctors",
-        category: "Brand Campaigns",
-        brand: "FYidoctors",
-        year: "2025",
-        description: "A fast-paced, trendy showcase of new designer frame collections, tailored for TikTok and Instagram Reels.",
-        tags: ["TikTok", "IG Reel"],
-        thumbnailUrl: vogueThumb,
-        orientation: "vertical",
-        media: {
-            type: "youtube",
-            id: "lFrIKXDTguk" // Vertical Short or reel ID
-        }
-    },
-    {
-        id: "3",
-        title: "Lagostina Premium Cookware",
-        category: "Brand Campaigns",
-        brand: "Lagostina",
-        year: "2025",
-        description: "Cinematic culinary content emphasizing the durability and striking aesthetic of Lagostina's premium cookware line.",
-        thumbnailUrl: lagostinaThumb,
-        orientation: "vertical",
-        media: {
-            type: "youtube",
-            id: "Fyd3DCjybTw"
-        }
-    },
-    {
-        id: "4",
-        title: "Kohinoor Jewellers Collection",
-        category: "Brand Campaigns",
-        brand: "Kohinoor Jewellers",
-        year: "2024",
-        description: "Elegant macro videography highlighting the intricate details of luxury bridal jewelry pieces.",
-        thumbnailUrl: kohinoorThumb,
-        orientation: "vertical",
-        media: {
-            type: "youtube",
-            id: "onJ-FYE9wBI"
-        }
-    },
-    {
-        id: "5",
-        title: "CrossIron Mills Holiday Haul",
-        category: "Brand Campaigns",
-        brand: "CrossIron Mills",
-        year: "2023",
-        description: "Dynamic shopping experience capturing the festive atmosphere and premium retailers at CrossIron Mills.",
-        thumbnailUrl: crossironThumb,
-        orientation: "vertical",
-        media: {
-            type: "youtube",
-            id: "8XjPxK8EIpk"
-        }
-    },
-    {
-        id: "6",
-        title: "HomeSense Seasonal Refresh",
-        category: "Brand Campaigns",
-        brand: "HomeSense",
-        year: "2023",
-        description: "Showcasing affordable, stylish seasonal decor finds in a highly engaging short-form format.",
-        thumbnailUrl: homesenseThumb,
-        orientation: "vertical",
-        media: {
-            type: "youtube",
-            id: "PUsxY9yp5zE"
-        }
-    },
-    {
-        id: "7",
-        title: "FYidoctors Sunglasses",
-        category: "Brand Campaigns",
-        brand: "FYidoctors",
-        year: "2024",
-        description: "A fast-paced, trendy showcase of FYidoctors Sunglasses for World Sunglasses Day, tailored for TikTok and Instagram Reels.",
-        thumbnailUrl: fyiSunglassThumb,
-        orientation: "vertical",
-        media: {
-            type: "youtube",
-            id: "3BNsY3wW_mU"
-        }
-    },
-    {
-        id: "8",
-        title: "New Chapter Wellness",
-        category: "Brand Campaigns",
-        brand: "New Chapter",
-        year: "2024",
-        description: "A calming lifestyle routine integrating natural supplements into daily wellness practices.",
-        thumbnailUrl: newChapterThumb,
-        orientation: "vertical",
-        media: {
-            type: "youtube",
-            id: "FmsqO48n7-k"
-        }
-    },
-    {
         id: "9",
         title: "Calgary Stampede Highlights",
         category: "Events & Festivals",
@@ -194,6 +82,7 @@ export const portfolioWork: WorkItem[] = [
         description: "A creative event hosted by Canon Canada x Socality for photographers and videographers to showcase their work.",
         thumbnailUrl: socalityThumb,
         orientation: "vertical",
+        tags: ["IG Reel"],
         media: {
             type: "youtube",
             id: "iCkywsCNR3k"
@@ -208,6 +97,7 @@ export const portfolioWork: WorkItem[] = [
         description: "Moody, neon lit model shoot focusing on city lights.",
         thumbnailUrl: breezyThumb,
         orientation: "vertical",
+        tags: ["IG Reel"],
         media: {
             type: "youtube",
             id: "9wnLMJIo8Hs"
@@ -222,6 +112,7 @@ export const portfolioWork: WorkItem[] = [
         description: "A recap of the Calgary Expo, showcasing the best cosplays and moments from the event.",
         thumbnailUrl: expoThumb,
         orientation: "vertical",
+        tags: ["IG Reel"],
         media: {
             type: "youtube",
             id: "odX7MSitVXY"
@@ -236,6 +127,7 @@ export const portfolioWork: WorkItem[] = [
         description: "A recap of the Chinook Blast | Winter Festival, showcasing the best moments from the event.",
         thumbnailUrl: chinookThumb,
         orientation: "vertical",
+        tags: ["IG Reel"],
         media: {
             type: "youtube",
             id: "MF4LoAL88-0"
@@ -299,16 +191,32 @@ export const portfolioWork: WorkItem[] = [
     },
     {
         id: "18",
-        title: "Heartwood Community Inaugural Event",
-        category: "Events & Festivals",
-        brand: "Heartwood Community, Calgary",
-        year: "2025",
-        description: "A recap of the Heartwood Community Inaugural Event, showcasing the best moments from the event.",
-        thumbnailUrl: heartwoodThumb,
+        title: "Dusky Evenings",
+        category: "Creative / Model Work",
+        brand: "Self",
+        year: "2026",
+        description: "Moody, shoot during dusk",
+        thumbnailUrl: duskyThumb,
         orientation: "vertical",
+        tags: ["IG Reel"],
         media: {
             type: "youtube",
-            id: "LtlaOKrT9-w"
+            id: "lhxsGc99CYU"
+        }
+    },
+    {
+        id: "19",
+        title: "Gender Reveal",
+        category: "Intimate Events",
+        brand: "Don & Honey",
+        year: "2026",
+        description: "Intimate event of a group of friends, celebrating a gender reveal of the first baby",
+        thumbnailUrl: donHoney,
+        orientation: "horizontal",
+        tags: ["Youtube"],
+        media: {
+            type: "youtube",
+            id: "DD1ChcZffjE"
         }
     },
 ];

@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Search, Briefcase, ChevronDown, ChevronUp, X } from 'lucide-react';
 import { Section } from './Section';
-import { portfolioWork, type WorkItem, type Category } from '@/data/work';
+import { portfolioWork, WORK_CATEGORIES, type WorkItem, type Category } from '@/data/work';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { VideoEmbed } from '@/components/media/VideoEmbed';
@@ -19,7 +19,7 @@ export const FeaturedWork: React.FC = () => {
 
     const isMobile = useMediaQuery('(max-width: 767px)');
 
-    const categories: Category[] = ['All', 'Brand Campaigns', 'Events & Festivals', 'Creative / Model Work', 'YouTube & Cinematic'];
+    const categories = [...WORK_CATEGORIES];
 
     const filteredWork = useMemo(() => {
         return portfolioWork.filter(project => {
@@ -168,7 +168,7 @@ export const FeaturedWork: React.FC = () => {
                                         {project.category}
                                     </span>
                                     <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground">
-                                        {project.media.type.toUpperCase()}
+                                        {project.tags?.join('|')}
                                     </span>
                                 </div>
                                 <h3 className="text-2xl font-heading font-black mb-3 group-hover:text-primary transition-colors duration-300 line-clamp-1">
@@ -180,6 +180,42 @@ export const FeaturedWork: React.FC = () => {
                             </div>
                         </motion.div>
                     ))}
+
+                    {/* Extra Card for Brand Campaigns */}
+                    {activeCategory === 'Brand Campaigns' && searchQuery === '' && (
+                        <motion.div
+                            key="brand-campaigns-more"
+                            layout
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            transition={{ duration: 0.4, delay: visibleItems.length * 0.05 }}
+                            className="relative rounded-2xl overflow-hidden bg-muted/30 border-2 border-dashed border-border/50 flex flex-col items-center justify-center p-8 text-center min-h-[400px]"
+                        >
+                            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6">
+                                <Briefcase className="w-8 h-8 text-primary" />
+                            </div>
+                            <h3 className="text-xl font-heading font-black mb-4">More Work Available</h3>
+                            <p className="text-muted-foreground text-sm leading-relaxed text-balance">
+                                More works are available on request, won't be able to post here due to brand guidelines.
+                            </p>
+                            <div className="mt-8">
+                                <Button 
+                                    variant="outline" 
+                                    size="sm" 
+                                    className="rounded-full border-primary/20 hover:bg-primary/5"
+                                    onClick={() => {
+                                        const contactSection = document.getElementById('contact');
+                                        if (contactSection) {
+                                            contactSection.scrollIntoView({ behavior: 'smooth' });
+                                        }
+                                    }}
+                                >
+                                    Inquire Privately
+                                </Button>
+                            </div>
+                        </motion.div>
+                    )}
                 </AnimatePresence>
             </motion.div>
 

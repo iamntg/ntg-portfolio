@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Camera } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { navLinks } from '@/data';
 import { Button } from '@/components/ui/Button';
 import { scrollToSection } from '@/utils/scroll';
@@ -34,9 +34,8 @@ export const Navbar: React.FC = () => {
         >
             <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
                 {/* Logo */}
-                <a href="#" className="flex items-center gap-2 text-xl font-heading font-bold tracking-tighter z-[60]">
-                    <Camera className="w-6 h-6" />
-                    <span>NTG</span>
+                <a href="#" className="flex items-center gap-2 text-3xl font-heading font-bold tracking-tighter z-[60]">
+                    <span>nebulatic.</span>
                 </a>
 
                 {/* Desktop Nav */}

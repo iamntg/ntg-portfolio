@@ -1,3 +1,8 @@
+
+import donClientImg from "@/assets/clients/don.jpg"
+import aliyaClientImg from "@/assets/clients/aliya.jpg"
+import saravanClientImg from "@/assets/clients/saravan.jpg"
+
 export const navLinks = [
     { name: "Work", href: "#work" },
     { name: "Services", href: "#services" },
@@ -11,63 +16,6 @@ export const heroContent = {
     subheadline: "I shoot, edit, color grade, and deliver scroll-stopping IG Reels & TikTok ads.",
     badges: ["25+ campaigns delivered", "Fast turnaround", "Calgary-based"],
 };
-
-export const featuredProjects = [
-    {
-        id: "1",
-        title: "Fitness Brand Launch",
-        category: "Reels",
-        description: "High-energy promotional reel for a local gym highlighting their new equipment.",
-        tags: ["IG Reel", "UGC", "Fitness"],
-        videoUrl: "", // TODO: Add video URL
-        imageUrl: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    },
-    {
-        id: "2",
-        title: "Cafe Aesthetic Promo",
-        category: "TikTok",
-        description: "Cozy, cinematic promo aimed at driving foot traffic to a newly opened cafe.",
-        tags: ["TikTok", "Food & Beverage"],
-        videoUrl: "", // TODO: Add video URL
-        imageUrl: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    },
-    {
-        id: "3",
-        title: "Tech Startup Event",
-        category: "Events",
-        description: "Intimate networking event coverage capturing keynote speakers and attendee reactions.",
-        tags: ["Event", "Corporate"],
-        videoUrl: "", // TODO: Add video URL
-        imageUrl: "https://images.unsplash.com/photo-1540317580384-e5d43616b9cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    },
-    {
-        id: "4",
-        title: "Fashion Boutique Haul",
-        category: "Reels",
-        description: "Fast-paced try-on haul emphasizing trendy cuts and fabric textures.",
-        tags: ["IG Reel", "Fashion"],
-        videoUrl: "", // TODO: Add video URL
-        imageUrl: "https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    },
-    {
-        id: "5",
-        title: "Real Estate Walkthrough",
-        category: "Photo",
-        description: "Premium property showcase highlighting spacious interiors and modern lighting.",
-        tags: ["Photo", "Real Estate"],
-        videoUrl: "",
-        imageUrl: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    },
-    {
-        id: "6",
-        title: "Local Brewery Spotlight",
-        category: "TikTok",
-        description: "Behind-the-scenes look at the brewing process to connect with local craft beer lovers.",
-        tags: ["TikTok", "Small Business"],
-        videoUrl: "", // TODO: Add video URL
-        imageUrl: "https://images.unsplash.com/photo-1532634922-8fe0b757fb13?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    },
-];
 
 export const services = [
     {
@@ -152,23 +100,23 @@ export const processSteps = [
 export const testimonials = [
     {
         id: "1",
-        name: "Client A",
-        role: "Local Business Owner",
-        content: "Nitheesh completely transformed our online presence. His attention to detail and cinematic style is unmatched in Calgary.",
-        avatar: "https://i.pravatar.cc/150?u=1",
+        name: "Aliya Gulamhusein",
+        role: "Instagram Influencer | @stylebyaliya",
+        content: "Nitheesh is professional, easy to work with, and delivers great quality content. He was organized, reliable, and made filming very straightforward. Pleasure to work with him.",
+        avatar: aliyaClientImg,
     },
     {
         id: "2",
-        name: "Client B",
-        role: "Fitness Influencer",
-        content: "The workflow was effortless. Fast turnaround, crisp editing, and the engagement on the resulting Reels has been insane.",
-        avatar: "https://i.pravatar.cc/150?u=2",
+        name: "Don & Honey",
+        role: "Intimate Event",
+        content: "Nitheesh beautifully captured our baby's gender reveal. Professional, creative, and easy to work with. The video is a priceless memory for us.",
+        avatar: donClientImg,
     },
     {
         id: "3",
-        name: "Client C",
-        role: "Event Coordinator",
-        content: "He managed to capture the exact vibe of our exclusive launch event without being intrusive. Simply professional.",
-        avatar: "https://i.pravatar.cc/150?u=3",
+        name: "Saravan",
+        role: "Newborn Videoshoot",
+        content: "<coming soon>",
+        avatar: saravanClientImg,
     },
 ];

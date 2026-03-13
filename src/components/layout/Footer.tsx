@@ -14,7 +14,7 @@ export const Footer: React.FC = () => {
                     <div className="col-span-1 md:col-span-2">
                         <a href="#" className="flex items-center gap-2 text-2xl font-heading font-bold tracking-tighter mb-4">
                             <Camera className="w-8 h-8" />
-                            <span>NTG</span>
+                            <span>nebulatic</span>
                         </a>
                         <p className="text-muted-foreground text-sm max-w-sm mb-6">
                             Cinematic video production and photography for forward-thinking brands and creators in Calgary, AB.

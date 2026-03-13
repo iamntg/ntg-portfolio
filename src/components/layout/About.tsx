@@ -36,7 +36,7 @@ export const About: React.FC = () => {
                             My approach blends high-end cinematic aesthetics with the fast-paced, engaging style required for platforms like TikTok and Instagram Reels. I understand the algorithms, but more importantly, I understand human attention.
                         </p>
                         <p>
-                            Whether it's capturing the raw energy of an intimate live event or directing a detailed brand campaign, I bring reliability, precise planning, and a refined visual eye to every project. My goal isn't just to make things look good—it's to make content that converts and builds your audience.
+                            Whether it's capturing the raw energy of an intimate live event or directing a detailed brand campaign, I bring reliability, precise planning, and a refined visual eye to every project. My goal isn't just to make things look good - it's to make content that converts and builds your audience.
                         </p>
                     </div>
 
