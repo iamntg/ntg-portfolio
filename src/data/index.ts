@@ -116,7 +116,7 @@ export const testimonials = [
         id: "3",
         name: "Saravan",
         role: "Newborn Videoshoot",
-        content: "<coming soon>",
+        content: "The whole experience with Nitheesh was surreal. It was the first time we were taking our baby out for an outdoor shoot, and he made sure we were comfortable every step of the way. The session felt relaxed, pleasant, and completely stress-free.",
         avatar: saravanClientImg,
     },
 ];
