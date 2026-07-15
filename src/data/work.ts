@@ -47,6 +47,8 @@ export interface WorkItem {
     | { type: "image"; src: string; alt?: string };
 }
 
+// Wherever this is displayed, label it "Brands featured in campaigns I've shot" —
+// never "Clients." These are brands that appeared in campaign work, not direct clients.
 export const brands = [
     "Turo",
     "FYidoctors",

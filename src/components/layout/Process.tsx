@@ -9,7 +9,7 @@ export const Process: React.FC = () => {
             <div className="max-w-3xl mx-auto text-center mb-16 md:mb-24">
                 <h2 className="text-3xl md:text-5xl font-heading font-bold mb-6">How I Work</h2>
                 <p className="text-lg text-muted-foreground text-balance">
-                    A seamless, transparent process designed to take your project from concept to cinematic reality without the friction.
+                    A clear, step-by-step process that takes your project from first idea to finished video, with no surprises along the way.
                 </p>
             </div>
 

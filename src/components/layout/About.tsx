@@ -30,13 +30,13 @@ export const About: React.FC = () => {
 
                     <div className="space-y-6 text-lg text-muted-foreground mb-8">
                         <p>
-                            I’m Nitheesh, a Calgary-based videographer specializing in creating scroll-stopping cinematic content for influencers, artists, and small businesses.
+                            I’m Nitheesh, a Calgary-based videographer. Most of my work is close to home, the cafés, restaurants, and shops around the city, the creators building an audience here, and the events and family gatherings people want to remember.
                         </p>
                         <p>
-                            My approach blends high-end cinematic aesthetics with the fast-paced, engaging style required for platforms like TikTok and Instagram Reels. I understand the algorithms, but more importantly, I understand human attention.
+                            I like to plan carefully before the camera comes out. We’ll talk through what you’re hoping for, I’ll map the shots, and I show up ready so the shoot day feels calm. For a local café that might mean catching the morning light and the details that make the room feel like itself; for a creator, footage that actually sounds and looks like you.
                         </p>
                         <p>
-                            Whether it's capturing the raw energy of an intimate live event or directing a detailed brand campaign, I bring reliability, precise planning, and a refined visual eye to every project. My goal isn't just to make things look good - it's to make content that converts and builds your audience.
+                            From there it’s about delivering, on time, edited with care, and sweated over in the details. Whether it’s an event, a family moment, a brand campaign, or an influencer collab, I want you to open the final file and feel like it captured the real thing.
                         </p>
                     </div>
 

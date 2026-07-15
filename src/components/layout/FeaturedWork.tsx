@@ -49,10 +49,10 @@ export const FeaturedWork: React.FC = () => {
                             <span>Featured Work</span>
                         </div>
                         <h2 className="text-3xl md:text-6xl font-heading text-center font-black mb-6 tracking-tight text-balance">
-                            Crafting Visual <span className="text-primary italic">Narratives</span>
+                            Recent <span className="text-primary italic">Work</span>
                         </h2>
                         <p className="text-lg md:text-xl text-muted-foreground text-center leading-relaxed text-balance">
-                            A curated selection of high-impact visual stories for global brands and visionary artists.
+                            A selection of brand campaigns, events, and cinematic work shot around Calgary and beyond.
                         </p>
                     </div>
 

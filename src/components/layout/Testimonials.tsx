@@ -10,7 +10,7 @@ export const Testimonials: React.FC = () => {
             <div className="text-center max-w-2xl mx-auto mb-16 md:mb-24">
                 <h2 className="text-3xl md:text-5xl font-heading font-bold mb-6">Client Experiences</h2>
                 <p className="text-lg text-muted-foreground text-balance">
-                    Don't just take my word for it. Here is what people are saying about their visual transformations.
+                    Here's what recent clients have said about working with me.
                 </p>
             </div>
 

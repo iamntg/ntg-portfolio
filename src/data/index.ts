@@ -12,54 +12,68 @@ export const navLinks = [
 ];
 
 export const heroContent = {
-    headline: "Cinematic Reels & Brand Content for Influencers and Small Businesses in Calgary",
-    subheadline: "I shoot, edit, color grade, and deliver scroll-stopping IG Reels & TikTok ads.",
-    badges: ["25+ campaigns delivered", "Fast turnaround", "Calgary-based"],
+    headline: "Video that gets Calgary businesses, creators, and moments noticed.",
+    subheadline: "Short-form reels, brand campaigns, and cinematic event films, shot, edited, and delivered end-to-end. Based in Calgary.",
+    badges: ["28 campaigns delivered", "Fast turnaround", "Calgary-based"],
 };
 
 export const services = [
     {
         id: "1",
-        title: "Influencer Ad Campaign Reel",
-        price: "Packages available — request a quote",
-        description: "End-to-end production (shoot + edit) for impactful Instagram & TikTok ads.",
+        title: "Social Reel",
+        price: "From $350",
+        description: "One scroll-ready reel for Instagram or TikTok, shot and edited end-to-end.",
         included: [
-            "Pre-production planning & shot list",
-            "On-location shoot + Professional editing",
-            "Typical turnaround: 2-5 days",
+            "Planning & shot list",
+            "On-location shoot + full edit & color",
+            "1 revision round",
+            "2–5 day turnaround",
         ],
     },
     {
         id: "2",
-        title: "TikTok + IG Bundle",
-        price: "Packages available — request a quote",
-        description: "Maximizing content yield with optimized ratios and pacing for both platforms.",
+        title: "Local Business Content Day",
+        price: "From $800 · Best value",
+        description: "One shoot session, three reels for your café, restaurant, or shop.",
         included: [
-            "Multiple short-form cuts & hooks",
-            "Trend-based editing native to platform",
-            "Typical turnaround: 3-5 days"
+            "Half-day on-location shoot",
+            "3 platform-ready short-form reels",
+            "1 revision round",
+            "3–5 day turnaround",
         ],
     },
     {
         id: "3",
         title: "Event Highlights",
-        price: "Custom pricing based on scope",
-        description: "Cinematic recap video capturing the essence of your intimate event or launch.",
+        price: "From $650",
+        description: "Cinematic recap of your event or launch.",
         included: [
-            "Up to 4 hours of event coverage",
-            "2-5 min cinematic highlight reel & audio",
-            "Typical turnaround: 5-7 days"
+            "Up to 4 hours of coverage",
+            "2–5 min highlight reel with audio",
+            "5–7 day turnaround",
         ],
     },
     {
         id: "4",
-        title: "Photo Session",
-        price: "Packages available — request a quote",
-        description: "High-quality brand photography suitable for websites, PR, and social media grids.",
+        title: "Brand / Product Photos",
+        price: "From $300",
+        description: "High-res retouched images for web, PR, and social.",
         included: [
-            "1-2 hour on-location shoot",
+            "1–2 hour on-location shoot",
             "Retouched final high-res images",
-            "Typical turnaround: 2-4 days"
+            "2–4 day turnaround",
+        ],
+    },
+    {
+        id: "5",
+        title: "Monthly Social Retainer",
+        price: "From $1,000/mo",
+        description: "Four reels a month at the best per-reel rate, with priority scheduling.",
+        included: [
+            "4 short-form reels / month",
+            "Priority booking",
+            "Best per-reel value",
+            "Ongoing content plan",
         ],
     },
 ];
@@ -83,7 +97,7 @@ export const processSteps = [
     {
         number: "04",
         title: "Edit & Color",
-        description: "Transforming raw footage into a polished, scroll-stopping narrative.",
+        description: "Turning raw footage into a polished, well-paced final cut.",
     },
     {
         number: "05",

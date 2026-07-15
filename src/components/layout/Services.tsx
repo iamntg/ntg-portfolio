@@ -3,6 +3,7 @@ import { Check } from 'lucide-react';
 import { Section } from './Section';
 import { services } from '../../data';
 import { Button } from '../ui/Button';
+import { scrollToSection } from '../../utils/scroll';
 
 export const Services: React.FC = () => {
     return (
@@ -10,15 +11,21 @@ export const Services: React.FC = () => {
             <div className="text-center max-w-2xl mx-auto mb-16 md:mb-24">
                 <h2 className="text-3xl md:text-5xl font-heading font-bold mb-6">Services & Packages</h2>
                 <p className="text-lg text-muted-foreground text-balance">
-                    Tailored production packages designed to elevate your brand's digital presence with cinematic visuals.
+                    Every package includes the planning, the shoot, and a full edit — priced so you know exactly what you're getting.
                 </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
-                {services.map((service, index) => (
+                {services.map((service) => {
+                    const isFeatured = service.id === "2";
+                    return (
                     <div
                         key={service.id}
-                        className="flex flex-col p-8 rounded-3xl bg-background border border-border shadow-sm hover:shadow-lg transition-all duration-300"
+                        className={`flex flex-col p-8 rounded-3xl bg-background transition-all duration-300 ${
+                            isFeatured
+                                ? "border-2 border-primary shadow-xl shadow-primary/10"
+                                : "border border-border shadow-sm hover:shadow-lg"
+                        }`}
                     >
                         <div className="mb-6">
                             <h3 className="text-2xl font-heading font-bold mb-2">{service.title}</h3>
@@ -40,11 +47,16 @@ export const Services: React.FC = () => {
                             </ul>
                         </div>
 
-                        <Button variant={index === 0 ? "primary" : "outline"} className="w-full h-12">
+                        <Button
+                            variant={isFeatured ? "primary" : "outline"}
+                            className="w-full h-12"
+                            onClick={(e) => scrollToSection(e, '#contact')}
+                        >
                             Request a Quote
                         </Button>
                     </div>
-                ))}
+                    );
+                })}
             </div>
             <div className="mt-12 text-center max-w-2xl mx-auto">
                 <p className="text-sm text-muted-foreground">

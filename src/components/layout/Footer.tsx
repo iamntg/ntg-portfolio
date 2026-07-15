@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { navLinks } from '@/data';
 import { Camera, Mail } from 'lucide-react';
 import { Instagram, Facebook } from '@/components/ui/BrandIcons';
@@ -62,8 +63,8 @@ export const Footer: React.FC = () => {
                 <div className="mt-12 pt-8 border-t border-border/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
                     <p>&copy; {new Date().getFullYear()} Nitheesh (NTG). All rights reserved.</p>
                     <div className="flex gap-4">
-                        <a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a>
-                        <a href="#" className="hover:text-foreground transition-colors">Terms of Service</a>
+                        <Link to="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
+                        <Link to="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link>
                     </div>
                 </div>
             </div>
