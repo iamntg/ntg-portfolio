@@ -4,10 +4,12 @@ import { Button } from '@/components/ui/Button';
 import { heroContent } from '@/data';
 import { CheckCircle } from 'lucide-react';
 import { scrollToSection } from '@/utils/scroll';
+import { HeroBackground } from './HeroBackground';
 
 export const Hero: React.FC = () => {
     return (
         <section id="hero" className="relative min-h-screen flex items-center pt-32 pb-20 justify-center overflow-hidden bg-white">
+            <HeroBackground />
             <div className="container mx-auto px-4 md:px-6 relative z-10">
                 <div className="max-w-4xl mx-auto text-center">
                     <motion.div
