@@ -7,6 +7,7 @@ import { scrollToSection } from '@/utils/scroll';
 export const Navbar: React.FC = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [activeSection, setActiveSection] = useState('');
 
     useEffect(() => {
         const handleScroll = () => {
@@ -14,6 +15,26 @@ export const Navbar: React.FC = () => {
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // Scroll-spy: bold the nav link whose section is currently in view.
+    useEffect(() => {
+        const sections = navLinks
+            .map((link) => document.getElementById(link.href.replace('#', '')))
+            .filter((el): el is HTMLElement => el !== null);
+        if (sections.length === 0) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                const visible = entries
+                    .filter((entry) => entry.isIntersecting)
+                    .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+                if (visible[0]) setActiveSection(visible[0].target.id);
+            },
+            { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
+        );
+        sections.forEach((section) => observer.observe(section));
+        return () => observer.disconnect();
     }, []);
 
     useEffect(() => {
@@ -41,17 +62,23 @@ export const Navbar: React.FC = () => {
                 {/* Desktop Nav */}
                 <nav className="hidden md:flex items-center gap-8">
                     <ul className="flex items-center gap-6">
-                        {navLinks.map((link) => (
-                            <li key={link.name}>
-                                <a
-                                    href={link.href}
-                                    onClick={(e) => scrollToSection(e, link.href, () => setIsMobileMenuOpen(false))}
-                                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                                >
-                                    {link.name}
-                                </a>
-                            </li>
-                        ))}
+                        {navLinks.map((link) => {
+                            const isActive = activeSection === link.href.replace('#', '');
+                            return (
+                                <li key={link.name}>
+                                    <a
+                                        href={link.href}
+                                        onClick={(e) => scrollToSection(e, link.href, () => setIsMobileMenuOpen(false))}
+                                        className={`text-sm transition-colors ${isActive
+                                            ? 'font-bold text-foreground'
+                                            : 'font-medium text-muted-foreground hover:text-foreground'
+                                            }`}
+                                    >
+                                        {link.name}
+                                    </a>
+                                </li>
+                            );
+                        })}
                     </ul>
                     <Button variant="primary" size="sm" onClick={(e) => scrollToSection(e, '#contact')}>Get a Quote</Button>
                 </nav>
@@ -72,17 +99,21 @@ export const Navbar: React.FC = () => {
                     }`}
             >
                 <ul className="flex flex-col items-center gap-8 pt-12">
-                    {navLinks.map((link) => (
-                        <li key={link.name}>
-                            <a
-                                href={link.href}
-                                className="text-3xl font-heading font-bold tracking-tight hover:text-primary transition-colors"
-                                onClick={(e) => scrollToSection(e, link.href, () => setIsMobileMenuOpen(false))}
-                            >
-                                {link.name}
-                            </a>
-                        </li>
-                    ))}
+                    {navLinks.map((link) => {
+                        const isActive = activeSection === link.href.replace('#', '');
+                        return (
+                            <li key={link.name}>
+                                <a
+                                    href={link.href}
+                                    className={`text-3xl font-heading font-bold tracking-tight transition-colors ${isActive ? 'text-primary' : 'hover:text-primary'
+                                        }`}
+                                    onClick={(e) => scrollToSection(e, link.href, () => setIsMobileMenuOpen(false))}
+                                >
+                                    {link.name}
+                                </a>
+                            </li>
+                        );
+                    })}
                 </ul>
                 <div className="mt-4 flex flex-col items-center gap-6">
                     <Button variant="primary" size="lg" className="w-56 h-14 text-lg" onClick={(e) => scrollToSection(e, '#contact', () => setIsMobileMenuOpen(false))}>
