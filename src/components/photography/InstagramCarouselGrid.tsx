@@ -12,8 +12,11 @@ import { Button } from '@/components/ui/Button';
 const MOBILE_COLLAPSED_COUNT = 6;
 
 export const InstagramCarouselGrid: React.FC = () => {
-    // Shuffle the array once when the component mounts
+    // Shuffle the array once when the component mounts so the grid varies per visit.
+    // The randomness is intentional and computed once (empty deps), so the purity
+    // rule's concern about non-deterministic render output doesn't apply here.
     const shuffledPosts = useMemo(() => {
+        // eslint-disable-next-line react-hooks/purity -- intentional one-time shuffle
         return [...instagramCarousels].sort(() => Math.random() - 0.5);
     }, []);
 
