@@ -3,13 +3,14 @@ import donClientImg from "@/assets/clients/don.jpg"
 import aliyaClientImg from "@/assets/clients/aliya.jpg"
 import saravanClientImg from "@/assets/clients/saravan.jpg"
 
-export const navLinks = [
-    { name: "Work", href: "#work" },
-    { name: "Services", href: "#services" },
-    { name: "Process", href: "#process" },
-    { name: "About", href: "#about" },
-    { name: "Testimonials", href: "#testimonials" },
-];
+export const
+    navLinks = [
+        { name: "Work", href: "#work" },
+        { name: "Services", href: "#services" },
+        { name: "Process", href: "#process" },
+        { name: "About", href: "#about" },
+        { name: "Testimonials", href: "#testimonials" },
+    ];
 
 export const heroContent = {
     headline: "Video that gets Calgary businesses, creators, and moments noticed.",
