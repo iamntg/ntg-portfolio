@@ -22,7 +22,7 @@ export const services = [
     {
         id: "1",
         title: "Social Reel",
-        price: "From $350",
+        price: "From $250",
         description: "One scroll-ready reel for Instagram or TikTok, shot and edited end-to-end.",
         included: [
             "Planning & shot list",
@@ -34,7 +34,7 @@ export const services = [
     {
         id: "2",
         title: "Local Business Content Day",
-        price: "From $800 · Best value",
+        price: "From $650 · Best value",
         description: "One shoot session, three reels for your café, restaurant, or shop.",
         included: [
             "Half-day on-location shoot",
@@ -46,7 +46,7 @@ export const services = [
     {
         id: "3",
         title: "Event Highlights",
-        price: "From $650",
+        price: "From $600",
         description: "Cinematic recap of your event or launch.",
         included: [
             "Up to 4 hours of coverage",
@@ -57,7 +57,7 @@ export const services = [
     {
         id: "4",
         title: "Brand / Product Photos",
-        price: "From $300",
+        price: "From $200",
         description: "High-res retouched images for web, PR, and social.",
         included: [
             "1–2 hour on-location shoot",
@@ -68,7 +68,7 @@ export const services = [
     {
         id: "5",
         title: "Monthly Social Retainer",
-        price: "From $1,000/mo",
+        price: "From $800/mo",
         description: "Four reels a month at the best per-reel rate, with priority scheduling.",
         included: [
             "4 short-form reels / month",
