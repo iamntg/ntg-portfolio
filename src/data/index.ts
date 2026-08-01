@@ -13,7 +13,7 @@ export const
     ];
 
 export const heroContent = {
-    headline: "Video that gets Calgary businesses, creators, and moments noticed.",
+    headline: "Visuals that help local businesses, creators, and moments stand out.",
     subheadline: "Short-form reels, brand campaigns, and cinematic event films, shot, edited, and delivered end-to-end. Based in Calgary.",
     badges: ["28 campaigns delivered", "Fast turnaround", "Calgary-based"],
 };
@@ -23,7 +23,7 @@ export const services = [
         id: "1",
         title: "Social Reel",
         price: "From $250",
-        description: "One scroll-ready reel for Instagram or TikTok, shot and edited end-to-end.",
+        description: "One scroll-ready reel for Instagram or Tiktok, shot and edited end-to-end.",
         included: [
             "Planning & shot list",
             "On-location shoot + full edit & color",
